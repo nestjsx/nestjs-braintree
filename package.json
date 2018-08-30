@@ -8,15 +8,27 @@
   "license": "MIT",
   "devDependencies": {
     "@nestjs/common": "^5.2.2",
+    "@nestjs/core": "^5.2.2",
+    "@nestjs/testing": "^5.2.2",
     "@types/jest": "^23.3.1",
     "coveralls": "^3.0.2",
     "jest": "^23.5.0",
+    "nestjs-config": "^1.2.2",
     "prettier": "^1.14.2",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.3"
   },
   "dependencies": {
     "braintree": "^2.12.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "coveralls": "yarn run coverage --coverageReporters=text-lcov | coveralls",
+    "test:watch": "jest --watch",
+    "build": "rm -rf ./dist && tsc",
+    "format": "prettier **/**/*.ts --ignore-path ./.prettierignore --write && git status",
+    "prepublish": "npm run format && npm run build"
   },
   "jest": {
     "moduleFileExtensions": [
