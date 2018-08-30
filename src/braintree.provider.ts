@@ -7,7 +7,7 @@ export default class BraintreeProvider {
 
     protected readonly gateway;
 
-    constructor(options: BraintreeOptions) {
+    constructor(options) {
         this.gateway = braintree.connect(options);
     }
 }

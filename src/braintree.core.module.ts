@@ -8,7 +8,7 @@ export default class BraintreeCoreModule {
     
     private static provider = {
         provide: BRAINTREE_PROVIDER,
-        useClass: BraintreeProvider,
+        useFactory: async (options) => new BraintreeProvider(options),
         inject: [BRAINTREE_OPTIONS_PROVIDER],
     };
 
