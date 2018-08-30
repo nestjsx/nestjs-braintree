@@ -6,7 +6,7 @@
 
 <p align="center">A braintree module for braintree reoccurring payments and transactions.</p>
 
->> NOTE! Currently building
+> NOTE! Currently building
 
 ## Install 
 
@@ -39,7 +39,7 @@ export default class AppModule {}
 ```typescript
 import {Module} from '@nestjs/common';
 import {BraintreeModule} from 'nestjs-braintree';
-import {ConfigModule, ConfigService} from 'nestjs-conifg';
+import {ConfigModule, ConfigService} from 'nestjs-config';
 
 @Module({
     imports: [
