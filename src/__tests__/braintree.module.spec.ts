@@ -57,8 +57,10 @@ describe('Braintree Module', () => {
 
   it('BraintreeProvider is avaliable to providers', async () => {
     class TestProvider {
-      constructor(@InjectBraintreeProvider() private readonly braintreeProvider: BraintreeProvider) {
-      }
+      constructor(
+        @InjectBraintreeProvider()
+        private readonly braintreeProvider: BraintreeProvider,
+      ) {}
 
       getProvider(): BraintreeProvider {
         return this.braintreeProvider;
