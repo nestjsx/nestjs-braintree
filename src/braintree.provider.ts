@@ -1,13 +1,14 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, Inject} from '@nestjs/common';
 import { BraintreeOptions } from './interfaces';
 import * as braintree from 'braintree';
+import { BRAINTREE_OPTIONS_PROVIDER } from './braintree.constants';
 
 @Injectable()
 export default class BraintreeProvider {
 
     protected readonly gateway;
 
-    constructor(options: BraintreeOptions) {
+    constructor(@Inject(BRAINTREE_OPTIONS_PROVIDER) options: BraintreeOptions) {
         this.gateway = braintree.connect(options);
     }
 

@@ -22,7 +22,7 @@ export default class BraintreeModule {
                 },
                 this.provider,
             ],
-            exports: [BraintreeProvider, BRAINTREE_OPTIONS_PROVIDER],
+            exports: [BraintreeProvider],
         };
     }
 
@@ -33,7 +33,7 @@ export default class BraintreeModule {
                 this.createOptionsProvider(options),
                 this.provider,
             ],
-            exports: [BraintreeProvider, BRAINTREE_OPTIONS_PROVIDER],
+            exports: [BraintreeProvider],
         };
     }
 
