@@ -7,6 +7,7 @@ import {
   BraintreeWebhookModule,
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
+  BraintreeProvider,
 } from './..';
 
 class SubscriptionProvider {

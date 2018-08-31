@@ -14,8 +14,12 @@ export default class BraintreeWebhookProvider {
         
     }
 
-    call() {
-        //TODO call provider methods with decorators
+    //TODO add webhook type to param
+    handle(webhook): boolean {
+        //TODO call provider methods with decorators depending on webhook type
 
+        
+
+        return true;
     }
 }
