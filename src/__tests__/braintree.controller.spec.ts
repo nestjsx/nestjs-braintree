@@ -4,8 +4,22 @@ import { ConfigModule, ConfigService } from "nestjs-config";
 import {
   BraintreeModule,
   BraintreeWebhookController,
-  BraintreeWebhookModule
+  BraintreeWebhookModule,
+  BraintreeSubscriptionCanceled,
+  BraintreeSubscriptionExpired
 } from "./..";
+
+class SubscriptionProvider {
+  @BraintreeSubscriptionCanceled()
+  canceled() {
+    console.log("canceled");
+  }
+
+  @BraintreeSubscriptionExpired()
+  expired() {
+    console.log("expired");
+  }
+}
 
 describe("BraintreeWebhookController", () => {
   let module: TestingModule;
@@ -21,15 +35,22 @@ describe("BraintreeWebhookController", () => {
           inject: [ConfigService]
         }),
         BraintreeWebhookModule
-      ]
+      ],
+      providers: [SubscriptionProvider]
     }).compile();
   });
 
-  it("Webhook controller must instance", () => {
-    const controller = module.get<BraintreeWebhookController>(
-      BraintreeWebhookController
-    );
+  // it("Webhook controller must instance", () => {
+  //   const controller = module.get<BraintreeWebhookController>(
+  //     BraintreeWebhookController
+  //   );
 
-    expect(controller).toBeInstanceOf(BraintreeWebhookController);
+  //   expect(controller).toBeInstanceOf(BraintreeWebhookController);
+  // });
+
+  it("webhookmodule should instance subscription provider", () => {
+    const provider = module.get<SubscriptionProvider>(SubscriptionProvider);
+
+    expect(provider).toBeInstanceOf(SubscriptionProvider);
   });
 });
