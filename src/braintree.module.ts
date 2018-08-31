@@ -1,7 +1,8 @@
-import {Module, DynamicModule} from '@nestjs/common';
+import {Module, DynamicModule, Global} from '@nestjs/common';
 import { BraintreeAsyncOptions, BraintreeOptions } from './interfaces/braintree.options.interface';
 import BraintreeCoreModule from './braintree.core.module';
 
+@Global()
 @Module({})
 export default class BraintreeModule {
     

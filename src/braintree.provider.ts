@@ -7,7 +7,11 @@ export default class BraintreeProvider {
 
     protected readonly gateway;
 
-    constructor(options) {
+    constructor(options: BraintreeOptions) {
         this.gateway = braintree.connect(options);
+    }
+
+    parseWebhook(bt_signature, bt_payload) {
+        console.log(braintree.WebhookNotification);
     }
 }

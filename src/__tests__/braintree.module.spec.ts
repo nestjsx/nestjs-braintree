@@ -5,7 +5,6 @@ import * as path from "path";
 import {
   BraintreeModule,
   BRAINTREE_OPTIONS_PROVIDER,
-  BRAINTREE_PROVIDER,
   BraintreeProvider
 } from "..";
 
@@ -23,7 +22,7 @@ describe("Braintree Module", () => {
     }).compile();
 
     const options = module.get(BRAINTREE_OPTIONS_PROVIDER);
-    const provider = module.get<BraintreeProvider>(BRAINTREE_PROVIDER);
+    const provider = module.get<BraintreeProvider>(BraintreeProvider);
 
     expect(options.environment).toBe(braintree.Environment.Sandbox);
     expect(options.merchantId).toBe("merchantId");
@@ -46,7 +45,7 @@ describe("Braintree Module", () => {
     }).compile();
 
     const options = module.get(BRAINTREE_OPTIONS_PROVIDER);
-    const provider = module.get<BraintreeProvider>(BRAINTREE_PROVIDER);
+    const provider = module.get<BraintreeProvider>(BraintreeProvider);
 
     expect(options.environment).toBe(braintree.Environment.Sandbox);
     expect(options.merchantId).toBe("merchantId");

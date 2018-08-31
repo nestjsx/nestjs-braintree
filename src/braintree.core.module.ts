@@ -7,7 +7,7 @@ import { BraintreeOptions, BraintreeAsyncOptions } from './interfaces/braintree.
 export default class BraintreeCoreModule {
     
     private static provider = {
-        provide: BRAINTREE_PROVIDER,
+        provide: BraintreeProvider,
         useFactory: async (options) => new BraintreeProvider(options),
         inject: [BRAINTREE_OPTIONS_PROVIDER],
     };
@@ -22,6 +22,7 @@ export default class BraintreeCoreModule {
                 },
                 this.provider,
             ],
+            exports: [BraintreeProvider],
         };
     }
 
@@ -32,6 +33,7 @@ export default class BraintreeCoreModule {
                 this.createOptionsProvider(options),
                 this.provider,
             ],
+            exports: [BraintreeProvider],
         };
     }
 

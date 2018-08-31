@@ -22,11 +22,12 @@ $ yarn add nestjs-braintree //not currently published
 ```typescript
 import {Module} from '@nestjs/common';
 import {BraintreeModule} from 'nestjs-braintree';
+import * as braintree from 'braintree';
 
 @Module({
     imports: [
         BraintreeModule.registry({
-            environment: 'sandbox',
+            environment: braintree.Environment.Sandbox,
             merchantId: '',
             publicKey: '',
             privateKey: '',
@@ -54,8 +55,10 @@ import {ConfigModule, ConfigService} from 'nestjs-config';
 export default class AppModule {}
 
 //config/braintree.ts
+import * as braintree from 'braintree';
+
 export default {
-    environment: process.env.NODE_ENV == 'development' ? 'sandbox' : 'live',
+    environment: process.env.NODE_ENV == 'development' ? braintree.Environment.Sandbox : braintree.Environment.Live,
     merchantId: process.env.BRAINTREE_MERCHANT_ID,
     publicKey: process.env.BRAINTREE_PUBLIC_KEY,
     privateKey: process.env.BRAINTREE_PRIVATE_KEY,
