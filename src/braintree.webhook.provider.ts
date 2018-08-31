@@ -7,7 +7,11 @@ import {
 @Injectable()
 export default class BraintreeWebhookProvider {
 
-    constructor(private readonly providers: {[key: string]: Provider}, private readonly methods: BraintreeWebhookMethodTreeInterface) {
+    constructor(
+        private readonly providers: {[key: string]: Provider}, 
+        private readonly methods: BraintreeWebhookMethodTreeInterface,
+    ) {
+        
     }
 
     call() {

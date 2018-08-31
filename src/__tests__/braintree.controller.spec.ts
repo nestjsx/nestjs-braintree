@@ -40,13 +40,13 @@ describe('BraintreeWebhookController', async () => {
     }).compile();
   });
 
-  // it("Webhook controller must instance", () => {
-  //   const controller = module.get<BraintreeWebhookController>(
-  //     BraintreeWebhookController
-  //   );
+  it('Webhook controller must instance', () => {
+    const controller = module.get<BraintreeWebhookController>(
+      BraintreeWebhookController,
+    );
 
-  //   expect(controller).toBeInstanceOf(BraintreeWebhookController);
-  // });
+    expect(controller).toBeInstanceOf(BraintreeWebhookController);
+  });
 
   it('webhookmodule should instance subscription provider', () => {
     const provider = module.get<SubscriptionProvider>(SubscriptionProvider);

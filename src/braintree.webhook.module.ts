@@ -10,58 +10,60 @@ import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION
 import {BraintreeWebhookMethodTreeInterface} from './interfaces';
 
 const avaliableProviders: {[key: string]: Provider} = {};
-const methods: BraintreeWebhookMethodTreeInterface = { [BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [], [BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: []};
+const methods: BraintreeWebhookMethodTreeInterface = { 
+	[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [], 
+	[BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: [],
+};
 
 @Module({
-    imports: [BraintreeModule.forFeature()],
-    providers: [{
-        provide: BraintreeWebhookProvider,
-        useFactory: async (moduleContainer: ModulesContainer) => {
-            BraintreeWebhookModule.getBraintreeEventHandlers([...moduleContainer.values()]);
-            return new BraintreeWebhookProvider(avaliableProviders, methods);
-        },
-        inject: [ModulesContainer],
-    }],
-    controllers: [BraintreeWebhookController],
+  imports: [BraintreeModule.forFeature()],
+  providers: [{
+    provide: BraintreeWebhookProvider,
+    useFactory: async (moduleContainer: ModulesContainer) => {
+      BraintreeWebhookModule.getBraintreeEventHandlers([...moduleContainer.values()]);
+      return new BraintreeWebhookProvider(avaliableProviders, methods);
+    },
+    inject: [ModulesContainer],
+  }],
+  controllers: [BraintreeWebhookController],
 })
 export default class BraintreeWebhookModule {
-    public static getBraintreeEventHandlers(modules: any[]) {
-        modules.forEach(({metatype}) => {
-            const metadata: ComponentMetatype[] =
-            Reflect.getMetadata(NEST_METADATA_CONSTANTS.PROVIDERS, metatype) || [];
+  public static getBraintreeEventHandlers(modules: any[]) {
+    modules.forEach(({metatype}) => {
+      const metadata: ComponentMetatype[] =
+      Reflect.getMetadata(NEST_METADATA_CONSTANTS.PROVIDERS, metatype) || [];
 
-            if (metadata.length >= 1) BraintreeWebhookModule.setupProviders([...metadata.filter(metatype => typeof metatype === 'function')]);
-        });
-    }
+      if (metadata.length >= 1) BraintreeWebhookModule.setupProviders([...metadata.filter(metatype => typeof metatype === 'function')]);
+    });
+  }
 
-    private static setupProviders(providers: ComponentMetatype[]) {
-        const metadataScanner = new MetadataScanner();
+  private static setupProviders(providers: ComponentMetatype[]) {
+    const metadataScanner = new MetadataScanner();
 
-        providers.map(provider => {
-            metadataScanner.scanFromPrototype(null, provider['prototype'], method => {
+    providers.map(provider => {
+    	metadataScanner.scanFromPrototype(null, provider['prototype'], method => {
 
-                const descriptor = Reflect.getOwnPropertyDescriptor(
-                    provider['prototype'],
-                    method,
-                );
+				const descriptor = Reflect.getOwnPropertyDescriptor(
+					provider['prototype'],
+					method,
+				);
 
-                [BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED].forEach(hook => {
-                    if (Reflect.getMetadata(
-                        hook,
-                        descriptor.value,
-                      )) {
-                        if (!avaliableProviders.hasOwnProperty(provider['prototype'].constructor.name)) {
-                            avaliableProviders[provider['prototype'].constructor.name] = provider;
-                        }
+				[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED].forEach(hook => {
+					if (Reflect.getMetadata(
+						hook,
+						descriptor.value,
+					)) {
+						if (!avaliableProviders.hasOwnProperty(provider['prototype'].constructor.name)) {
+							avaliableProviders[provider['prototype'].constructor.name] = provider;
+						}
 
-                        methods[hook].push({
-                            provider: provider['prototype'].constructor.name,
-                            method,
-                        });
-                    }
-                });
-                
-            });
-        });
-    }
+						methods[hook].push({
+							provider: provider['prototype'].constructor.name,
+							method,
+						});
+					}
+				});     
+    	});
+    });
+  }
 }

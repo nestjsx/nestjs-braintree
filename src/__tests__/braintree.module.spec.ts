@@ -6,6 +6,7 @@ import {
   BraintreeModule,
   BRAINTREE_OPTIONS_PROVIDER,
   BraintreeProvider,
+  InjectBraintreeProvider,
 } from '..';
 
 describe('Braintree Module', () => {
@@ -38,7 +39,7 @@ describe('Braintree Module', () => {
           path.resolve(__dirname, '__stubs__', 'config', '*.ts'),
         ),
         BraintreeModule.forRootAsync({
-          useFactory: async config => config.get('braintree'),
+          useFactory: config => config.get('braintree'),
           inject: [ConfigService],
         }),
       ],
@@ -52,5 +53,33 @@ describe('Braintree Module', () => {
     expect(options.publicKey).toBe('publicKey');
     expect(options.privateKey).toBe('privateKey');
     expect(provider).toBeInstanceOf(BraintreeProvider);
+  });
+
+  it('BraintreeProvider is avaliable to providers', async () => {
+    class TestProvider {
+      constructor(@InjectBraintreeProvider() private readonly braintreeProvider: BraintreeProvider) {
+      }
+
+      getProvider(): BraintreeProvider {
+        return this.braintreeProvider;
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(
+          path.resolve(__dirname, '__stubs__', 'config', '*.ts'),
+        ),
+        BraintreeModule.forRootAsync({
+          useFactory: config => config.get('braintree'),
+          inject: [ConfigService],
+        }),
+      ],
+      providers: [TestProvider],
+    }).compile();
+
+    const provider = module.get<TestProvider>(TestProvider);
+
+    expect(provider.getProvider()).toBeInstanceOf(BraintreeProvider);
   });
 });

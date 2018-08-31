@@ -6,13 +6,13 @@ import { BRAINTREE_OPTIONS_PROVIDER } from './braintree.constants';
 @Injectable()
 export default class BraintreeProvider {
 
-    protected readonly gateway;
+  protected readonly gateway;
 
-    constructor(@Inject(BRAINTREE_OPTIONS_PROVIDER) options: BraintreeOptions) {
-        this.gateway = braintree.connect(options);
-    }
+  constructor(@Inject(BRAINTREE_OPTIONS_PROVIDER) options: BraintreeOptions) {
+    this.gateway = braintree.connect(options);
+  }
 
-    parseWebhook(bt_signature, bt_payload) {
-        console.log(braintree.WebhookNotification);
-    }
+  parseWebhook(bt_signature, bt_payload) {
+    console.log(braintree.WebhookNotification);
+  }
 }
