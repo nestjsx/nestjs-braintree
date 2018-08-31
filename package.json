@@ -20,7 +20,8 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "braintree": "^2.12.0"
+    "braintree": "^2.12.0",
+    "reflect-metadata": "^0.1.12"
   },
   "scripts": {
     "test": "jest",
