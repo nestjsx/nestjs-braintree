@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import { BraintreeOptions } from './interfaces/braintree.options.interface';
+import { BraintreeOptions } from './interfaces';
 import * as braintree from 'braintree';
 
 @Injectable()

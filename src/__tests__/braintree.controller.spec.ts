@@ -30,14 +30,15 @@ describe("BraintreeWebhookController", () => {
         ConfigModule.load(
           path.resolve(__dirname, "__stubs__", "config", "*.ts")
         ),
-        BraintreeModule.registerAsync({
+        BraintreeModule.forRootAsync({
           useFactory: async config => config.get("braintree"),
-          inject: [ConfigService]
+          inject: [ConfigService],
         }),
-        BraintreeWebhookModule
+
       ],
-      providers: [SubscriptionProvider]
+      providers: [SubscriptionProvider],
     }).compile();
+
   });
 
   // it("Webhook controller must instance", () => {

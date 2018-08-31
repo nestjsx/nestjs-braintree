@@ -1,22 +1,29 @@
 import {Module, DynamicModule, Global} from '@nestjs/common';
-import { BraintreeAsyncOptions, BraintreeOptions } from './interfaces/braintree.options.interface';
+import { BraintreeAsyncOptions, BraintreeOptions } from './interfaces';
 import BraintreeCoreModule from './braintree.core.module';
 
 @Global()
 @Module({})
 export default class BraintreeModule {
     
-    public static register(options: BraintreeOptions): DynamicModule {
+    public static forRoot(options: BraintreeOptions): DynamicModule {
         return {
             module: BraintreeModule,
-            imports: [BraintreeCoreModule.register(options)],
-        }
+            imports: [BraintreeCoreModule.forRoot(options)],
+        };
     }
 
-    public static registerAsync(options: BraintreeAsyncOptions): DynamicModule {
+    public static forRootAsync(options: BraintreeAsyncOptions): DynamicModule {
         return {
             module: BraintreeModule,
-            imports: [BraintreeCoreModule.registerAsync(options)],
-        }
+            imports: [BraintreeCoreModule.forRootAsync(options)],
+        };
+    }
+
+    public static forFeature(): DynamicModule {
+        return {
+            module: BraintreeModule,
+            imports: [BraintreeCoreModule.forFeature()],
+        };
     }
 }

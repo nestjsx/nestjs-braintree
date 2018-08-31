@@ -1,4 +1,4 @@
-import {Module, NestModule, Injectable, Component, Provider} from '@nestjs/common';
+import {Module, Provider} from '@nestjs/common';
 import BraintreeWebhookController from './braintree.webhook.controller';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 import { ModulesContainer } from '@nestjs/core/injector';
@@ -7,16 +7,13 @@ import BraintreeModule from './braintree.module';
 import { ComponentMetatype } from '@nestjs/core/injector/module';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
 import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED } from './braintree.constants';
+import {BraintreeWebhookMethodTreeInterface} from './interfaces';
 
 const avaliableProviders: {[key: string]: Provider} = {};
-const methods: {[key: string]: {
-    provider: string,
-    method: string,
-}[]} = { [BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [], [BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: []};
-
+const methods: BraintreeWebhookMethodTreeInterface = { [BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [], [BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: []};
 
 @Module({
-    imports: [BraintreeModule],
+    imports: [BraintreeModule.forFeature()],
     providers: [{
         provide: BraintreeWebhookProvider,
         useFactory: async (moduleContainer: ModulesContainer) => {
@@ -28,7 +25,7 @@ const methods: {[key: string]: {
     controllers: [BraintreeWebhookController],
 })
 export default class BraintreeWebhookModule {
-    public static getBraintreeEventHandlers(modules: any[]) /*: Promise<NestModule[]>*/ {
+    public static getBraintreeEventHandlers(modules: any[]) {
         modules.forEach(({metatype}) => {
             const metadata: ComponentMetatype[] =
             Reflect.getMetadata(NEST_METADATA_CONSTANTS.PROVIDERS, metatype) || [];
@@ -61,7 +58,7 @@ export default class BraintreeWebhookModule {
                             provider: provider['prototype'].constructor.name,
                             method,
                         });
-                      }
+                    }
                 });
                 
             });

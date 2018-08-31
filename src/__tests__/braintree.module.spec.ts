@@ -12,7 +12,7 @@ describe("Braintree Module", () => {
   it("Does it instance with options using registry", async () => {
     const module = await Test.createTestingModule({
       imports: [
-        BraintreeModule.register({
+        BraintreeModule.forRoot({
           environment: braintree.Environment.Sandbox,
           merchantId: "merchantId",
           publicKey: "publicKey",
@@ -37,7 +37,7 @@ describe("Braintree Module", () => {
         ConfigModule.load(
           path.resolve(__dirname, "__stubs__", "config", "*.ts")
         ),
-        BraintreeModule.registerAsync({
+        BraintreeModule.forRootAsync({
           useFactory: async config => config.get("braintree"),
           inject: [ConfigService]
         })
