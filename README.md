@@ -64,3 +64,43 @@ export default {
     privateKey: process.env.BRAINTREE_PRIVATE_KEY,
 }
 ```
+
+## Webhooks 
+
+When using subscriptions with braintree, braintree will issue webhooks to your endpoint which you can use the decorators to handle those actions. 
+
+```typescript 
+import {Module} from '@nestjs/common';
+import {
+    BraintreeModule, 
+    BraintreeWebhookModule, 
+    BraintreeSubscriptionCanceled, 
+    BraintreeSubscriptionExpired,
+} from 'nestjs-braintree';
+import {ConfigModule, ConfigService} from 'nestjs-config';
+
+class SubscriptionProvider {
+    @BraintreeSubscriptionCanceled()
+    canceled() {
+        console.log('subscription canceled');
+    }
+
+    @BraintreeSubscriptionExpired()
+    expired() {
+        console.log('subscription expired');
+    }
+}
+
+@Module({
+    imports: [
+        ConfigModule.load('root/to/config/*/**.{ts,js}'),
+        BraintreeModule.registryAsync({
+            useFactory: async (config: ConfigService) => config.get('braintree'),
+            inject: [ConfigService],
+        }),
+        BraintreeWebhookModule,
+    ],
+    providers: [SubscriptionProvider],
+})
+export default class AppModule {}
+```
