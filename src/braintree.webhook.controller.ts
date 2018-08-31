@@ -1,10 +1,11 @@
 import {Controller, HttpStatus, Req, Res} from '@nestjs/common';
 import BraintreeProvider from './braintree.provider';
+import BraintreeWebhookProvider from './braintree.webhook.provider';
 
 @Controller('')
 export default class BraintreeWebhookController {
 
-    constructor(private readonly braintree: BraintreeProvider) {}
+    constructor(private readonly braintree: BraintreeProvider, private readonly webhookProvider: BraintreeWebhookProvider) {}
 
     handle(@Req() request, @Res() response) {
         //TODO parse the payload from braintree

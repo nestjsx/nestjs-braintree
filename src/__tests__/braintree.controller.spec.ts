@@ -34,7 +34,7 @@ describe("BraintreeWebhookController", () => {
           useFactory: async config => config.get("braintree"),
           inject: [ConfigService],
         }),
-
+        BraintreeWebhookModule,
       ],
       providers: [SubscriptionProvider],
     }).compile();
