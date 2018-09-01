@@ -1,7 +1,4 @@
-import {
-  BraintreeWebhookMethodTreeInterface,
-  BraintreeWebhookMethodInterface,
-} from './braintree.webhook.methods.interface';
+import { BraintreeWebhookMethodTreeInterface } from './braintree.webhook.methods.interface';
 import {
   BraintreeOptions,
   BraintreeAsyncOptions,
@@ -12,7 +9,6 @@ import { BraintreeWebhookNotificationInterface } from './braintree.webhook.notif
 export {
   BraintreeAsyncOptions,
   BraintreeOptions,
-  BraintreeWebhookMethodInterface,
   BraintreeWebhookMethodTreeInterface,
   BraintreeWebhookPayloadInterface,
   BraintreeWebhookNotificationInterface,

@@ -1,4 +1,4 @@
-import {Module, Provider} from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import BraintreeWebhookController from './braintree.webhook.controller';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 import { ModulesContainer } from '@nestjs/core/injector';
@@ -6,10 +6,9 @@ import { metadata as NEST_METADATA_CONSTANTS } from '@nestjs/common/constants';
 import BraintreeModule from './braintree.module';
 import { ComponentMetatype } from '@nestjs/core/injector/module';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
-import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED } from './braintree.constants';
+import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED, BRAINTREE_WEBHOOK_PROVIDER_HANDLERS } from './braintree.constants';
 import {BraintreeWebhookMethodTreeInterface} from './interfaces';
 
-const avaliableProviders: {[key: string]: Provider} = {};
 const methods: BraintreeWebhookMethodTreeInterface = { 
 	[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [], 
 	[BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: [],
@@ -17,14 +16,17 @@ const methods: BraintreeWebhookMethodTreeInterface = {
 
 @Module({
   imports: [BraintreeModule.forFeature()],
-  providers: [{
-    provide: BraintreeWebhookProvider,
-    useFactory: async (moduleContainer: ModulesContainer) => {
-      BraintreeWebhookModule.getBraintreeEventHandlers([...moduleContainer.values()]);
-      return new BraintreeWebhookProvider(avaliableProviders, methods);
+  providers: [
+    {
+      provide: BRAINTREE_WEBHOOK_PROVIDER_HANDLERS,
+      useFactory: (moduleContainer: ModulesContainer) => {
+        BraintreeWebhookModule.getBraintreeEventHandlers([...moduleContainer.values()]);
+        return BraintreeWebhookModule.resolveMethods(methods);
+      },
+      inject: [ModulesContainer],
     },
-    inject: [ModulesContainer],
-  }],
+    BraintreeWebhookProvider,
+  ],
   controllers: [BraintreeWebhookController],
 })
 export default class BraintreeWebhookModule {
@@ -46,24 +48,27 @@ export default class BraintreeWebhookModule {
 				const descriptor = Reflect.getOwnPropertyDescriptor(
 					provider['prototype'],
 					method,
-				);
+        );
 
 				[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED].forEach(hook => {
 					if (Reflect.getMetadata(
 						hook,
 						descriptor.value,
-					)) {
-						if (!avaliableProviders.hasOwnProperty(provider['prototype'].constructor.name)) {
-							avaliableProviders[provider['prototype'].constructor.name] = provider;
-						}
+					) ) {
+            methods[hook].push(provider['prototype'][method]);
+          }
+        });
+      });
 
-						methods[hook].push({
-							provider: provider['prototype'].constructor.name,
-							method,
-						});
-					}
-				});     
-    	});
     });
+  }
+
+  public static resolveMethods(methods: BraintreeWebhookMethodTreeInterface): BraintreeWebhookMethodTreeInterface {
+    const handlers = {};
+    Object.keys(methods).forEach(hook => {
+      handlers[hook] = new Set(methods[hook]);
+    });
+
+    return handlers;
   }
 }

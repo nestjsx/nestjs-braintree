@@ -1,30 +1,26 @@
-import {Injectable, Provider} from '@nestjs/common';
+import {Injectable, Inject} from '@nestjs/common';
 import {
-    BraintreeWebhookMethodTreeInterface, 
-    BraintreeWebhookNotificationInterface,
-    BraintreeWebhookMethodInterface,
+  BraintreeWebhookMethodTreeInterface, 
+  BraintreeWebhookNotificationInterface,
 } from './interfaces';
+import { BRAINTREE_WEBHOOK_PROVIDER_HANDLERS } from './braintree.constants';
 
 @Injectable()
 export default class BraintreeWebhookProvider {
 
-    constructor(
-        private readonly providers: {[key: string]: Provider}, 
-        private readonly methods: BraintreeWebhookMethodTreeInterface,
-    ) {
-        
+  constructor(
+    @Inject(BRAINTREE_WEBHOOK_PROVIDER_HANDLERS) private readonly methods: BraintreeWebhookMethodTreeInterface,
+  ) {}
+
+  handle(webhook: BraintreeWebhookNotificationInterface): boolean {
+    
+    if (Object.keys(this.methods).includes(webhook.kind)) {
+      this.methods[webhook.kind].forEach((method: Function) => {
+        //TODO should I use Reflect to see what the injection is? Should I add a @Webhook() decorator? 
+        method.call(this, webhook);
+      });
     }
 
-    handle(webhook: BraintreeWebhookNotificationInterface): boolean {
-        //TODO call provider methods with decorators depending on webhook type
-
-        if (Object.keys(this.methods).includes(webhook.kind)) {
-            this.methods[webhook.kind].forEach((methodProto: BraintreeWebhookMethodInterface) => {
-                //TODO should I use Reflect to see what the injection is? Should I add a @Webhook() decorator? 
-                this.providers[methodProto.provider][methodProto.method](webhook);
-            });
-        }
-
-        return true;
-    }
+    return true;
+  }
 }

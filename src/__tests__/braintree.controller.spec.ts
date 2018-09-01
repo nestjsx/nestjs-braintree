@@ -8,17 +8,16 @@ import {
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
 } from './..';
-import * as braintree from 'braintree';
 
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()
   canceled() {
-    console.log('canceled');
+
   }
 
   @BraintreeSubscriptionExpired()
   expired() {
-    console.log('expired');
+
   }
 }
 
