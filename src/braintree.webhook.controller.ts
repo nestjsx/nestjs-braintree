@@ -1,12 +1,14 @@
-import {Controller, HttpStatus, Req, Res, Logger} from '@nestjs/common';
+import {Controller, HttpStatus, Req, Res, Logger, Post} from '@nestjs/common';
 import BraintreeProvider from './braintree.provider';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 
-@Controller('')
+//TODO make path configurable
+@Controller('braintree')
 export default class BraintreeWebhookController {
 
   constructor(private readonly braintree: BraintreeProvider, private readonly webhookProvider: BraintreeWebhookProvider) {}
 
+  @Post('webhook')
   async handle(@Req() request, @Res() response) {
     //TODO parse the payload from braintree
 		//TODO get the type of webhook it is 

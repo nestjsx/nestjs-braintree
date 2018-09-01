@@ -5,7 +5,7 @@
 </p>
 <h1 align="center">Nestjs Braintree</h1>
 
-<p align="center">A braintree module for braintree reoccurring payments and transactions built for the <a href="https://github.com/nestjs/nest">Nestjs</a> framework</p>
+<p align="center">A braintree module for <a href="https://www.braintreepayments.com/">Braintree</a> reoccurring payments and transactions built for the <a href="https://github.com/nestjs/nest">Nestjs</a> framework.</p>
 
 > NOTE! Currently building
 
@@ -126,7 +126,8 @@ class TransactionProvider {
   ) {}
 
   takePayment(amount: number) {
-    this.braintreeProvider.IhaveNoIdeaWhatImDoing(amount);
+    //Will probably be similar to sale https://developers.braintreepayments.com/guides/transactions/node#settlement
+    this.braintreeProvider.notImplementedYet(amount);
   }
 }
 

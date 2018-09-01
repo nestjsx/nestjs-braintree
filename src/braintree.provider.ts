@@ -15,4 +15,8 @@ export default class BraintreeProvider {
   async parseWebhook(payload: BraintreeWebhookPayloadInterface): Promise<BraintreeWebhookNotificationInterface> {
     return await this.gateway.webhookNotification.parse(payload.bt_signature, payload.bt_payload);
   }
+
+  //TODO add methods to handle creating a subscription
+  //TODO add methods to handle transactions
+  //TODO add methods for refunds 
 }
