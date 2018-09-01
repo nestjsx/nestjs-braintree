@@ -5,7 +5,7 @@
 </p>
 <h1 align="center">Nestjs Braintree</h1>
 
-<p align="center">A braintree module for braintree reoccurring payments and transactions.</p>
+<p align="center">A braintree module for braintree reoccurring payments and transactions built for the <a href="https://github.com/nestjs/nest">Nestjs</a> framework</p>
 
 > NOTE! Currently building
 
