@@ -1,4 +1,4 @@
 export interface BraintreeWebhookPayloadInterface {
-    bt_signature: string;
-    bt_payload: string;
-};
+  bt_signature: string;
+  bt_payload: string;
+}

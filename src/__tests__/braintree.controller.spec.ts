@@ -7,8 +7,8 @@ import {
   BraintreeWebhookModule,
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
-  BraintreeProvider,
 } from './..';
+import * as braintree from 'braintree';
 
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()

@@ -1,5 +1,5 @@
 import {Injectable, Inject} from '@nestjs/common';
-import { BraintreeOptions, BraintreeWebhookPayloadInterface } from './interfaces';
+import { BraintreeOptions, BraintreeWebhookPayloadInterface, BraintreeWebhookNotificationInterface } from './interfaces';
 import * as braintree from 'braintree';
 import { BRAINTREE_OPTIONS_PROVIDER } from './braintree.constants';
 
@@ -12,8 +12,7 @@ export default class BraintreeProvider {
     this.gateway = braintree.connect(options);
   }
 
-  //TODO return Promise<WebnotificationType> or whatever
-  async parseWebhook(payload: BraintreeWebhookPayloadInterface) {
+  async parseWebhook(payload: BraintreeWebhookPayloadInterface): Promise<BraintreeWebhookNotificationInterface> {
     return await this.gateway.webhookNotification.parse(payload.bt_signature, payload.bt_payload);
   }
 }

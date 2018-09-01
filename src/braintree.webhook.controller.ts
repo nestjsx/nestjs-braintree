@@ -1,4 +1,4 @@
-import {Controller, HttpStatus, Req, Res} from '@nestjs/common';
+import {Controller, HttpStatus, Req, Res, Logger} from '@nestjs/common';
 import BraintreeProvider from './braintree.provider';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 
@@ -23,11 +23,14 @@ export default class BraintreeWebhookController {
     } catch (e) {
       //TODO log something? see braintree for correct proceedure on signature failure
       response.status(HttpStatus.INTERNAL_SERVER_ERROR);
+      Logger.warn('Failed to process webhook', this.constructor.name);
     }
     console.log('webhook', webhook);
 
     //TODO call webhookProvider 
     //TODO again see braintree to see how to handle errors
-    response.status(this.webhookProvider.handle(webhook) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    this.webhookProvider.handle(webhook);
+
+    response.status(HttpStatus.OK);
   }
 }
