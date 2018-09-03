@@ -29,7 +29,7 @@ import * as braintree from 'braintree';
 
 @Module({
   imports: [
-    BraintreeModule.registry({
+    BraintreeModule.forRoot({
       environment: braintree.Environment.Sandbox,
       merchantId: '',
       publicKey: '',
@@ -38,6 +38,19 @@ import * as braintree from 'braintree';
   ],
 })
 export default class AppModule {}
+```
+
+### In a subModule
+```typescript
+import { Module } from '@nestjs/common';
+import { BraintreeModule } from 'nestjs-braintree';
+
+@Module({
+  imports: [
+    BraintreeModule.forFeature(),
+  ],
+})
+export default class SubModule {}
 ```
 
 ### Use with nestjs-config
@@ -50,7 +63,7 @@ import { ConfigModule, ConfigService } from 'nestjs-config';
 @Module({
   imports: [
     ConfigModule.load('root/to/config/*/**.{ts,js}'),
-    BraintreeModule.registryAsync({
+    BraintreeModule.forRootAsync({
       useFactory: async (config: ConfigService) => config.get('braintree'),
       inject: [ConfigService],
     }),
@@ -102,7 +115,7 @@ class SubscriptionProvider {
 @Module({
   imports: [
     ConfigModule.load('root/to/config/*/**.{ts,js}'),
-    BraintreeModule.registryAsync({
+    BraintreeModule.forRootAsync({
       useFactory: async (config: ConfigService) => config.get('braintree'),
       inject: [ConfigService],
     }),
@@ -137,7 +150,7 @@ class TransactionProvider {
 @Module({
   imports: [
     ConfigModule.load('root/to/config/*/**.{ts,js}'),
-    BraintreeModule.registryAsync({
+    BraintreeModule.forRoot({
       useFactory: async (config: ConfigService) => config.get('braintree'),
       inject: [ConfigService],
     }),
