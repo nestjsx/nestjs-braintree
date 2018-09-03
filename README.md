@@ -7,6 +7,8 @@
 <h1 align="center">Nestjs Braintree</h1>
 
 <p align="center">A module for <a href="https://www.braintreepayments.com/">Braintree</a> reoccurring payments and transactions built for the <a href="https://github.com/nestjs/nest">Nestjs</a> framework.</p>
+<br/>
+<p>Using the <a href="https://github.com/braintree/braintree_node">Braintree node SDK</a>.</p>
 
 > NOTE! Currently building
 
