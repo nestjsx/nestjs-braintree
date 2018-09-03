@@ -10,11 +10,13 @@ import {
 } from './..';
 import * as braintree from 'braintree';
 import BraintreeWebhookProvider from '../braintree.webhook.provider';
+import { Injectable } from '@nestjs/common';
 
 describe('BraintreeWebhookController', async () => {
 
   it('Decorator methods should be called from WebhookProvider', async () => {
 
+    @Injectable()
     class SubscriptionProvider {
       public static called = false;
 
@@ -65,5 +67,67 @@ describe('BraintreeWebhookController', async () => {
     webhookProvider.handle(webhookNotification);
 
     expect(SubscriptionProvider.called).toBeTruthy();
+  });
+
+  it('Make sure providers are still instanced with DI', async () => {
+
+    @Injectable()
+    class UselessProvider {
+      public static called = false;
+      callMe() {
+        UselessProvider.called = true;
+      }
+    }
+
+    @Injectable()
+    class SubscriptionProvider {
+      constructor(private readonly uselessProvider: UselessProvider) {
+        this.uselessProvider = uselessProvider;
+      }
+
+      @BraintreeSubscriptionCanceled()
+      canceled () {
+        console.log('this', this);
+        this.uselessProvider.callMe();
+      }
+
+    }
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        BraintreeModule.forRoot({
+          environment: braintree.Environment.Sandbox,
+          merchantId: 'merchantId',
+          publicKey: 'publicKey',
+          privateKey: 'privateKey',
+        }),
+        BraintreeWebhookModule,
+      ],
+      providers: [UselessProvider, SubscriptionProvider],
+    }).compile();
+
+    const gateway = braintree.connect({
+      environment: braintree.Environment.Sandbox,
+      merchantId: 'merchantId',
+      publicKey: 'publicKey',
+      privateKey: 'privateKey',
+    });
+
+    const braintreeProvider = module.get<BraintreeProvider>(BraintreeProvider);
+    const webhookProvider = module.get<BraintreeWebhookProvider>(
+      BraintreeWebhookProvider,
+    );
+
+    const webhookNotification = await braintreeProvider.parseWebhook(
+      gateway.webhookTesting.sampleNotification(
+        braintree.WebhookNotification.Kind.SubscriptionCanceled,
+      ),
+    );
+
+    webhookProvider.handle(webhookNotification);
+
+    //TODO resolve the BraintreeWebhookProvider::handle method to use the method's contructor 
+    //issue is `call(this, method)` from the handle method uses BraintreeWebhookProvider as constructor
+    expect(UselessProvider.called).toBeTruthy();
   });
 });

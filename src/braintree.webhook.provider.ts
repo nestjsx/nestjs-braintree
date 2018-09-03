@@ -17,6 +17,7 @@ export default class BraintreeWebhookProvider {
     if (Object.keys(this.methods).includes(webhook.kind)) {
       this.methods[webhook.kind].forEach((method: Function) => {
         //TODO should I use Reflect to see what the injection is? Should I add a @Webhook() decorator? 
+        console.log('method', method['prototype']);
         method.call(this, webhook);
       });
     }
