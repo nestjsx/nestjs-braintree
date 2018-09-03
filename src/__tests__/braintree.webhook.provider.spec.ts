@@ -16,9 +16,12 @@ describe('BraintreeWebhookController', async () => {
   it('Decorator methods should be called from WebhookProvider', async () => {
 
     class SubscriptionProvider {
+      public static called = false;
+
       @BraintreeSubscriptionCanceled()
       canceled(webhook) {
-        console.log('called');
+        //this is a work around the jest spyon reflect issue
+        SubscriptionProvider.called = true;
       }
 
       @BraintreeSubscriptionExpired()
@@ -26,9 +29,6 @@ describe('BraintreeWebhookController', async () => {
         
       }
     }
-
-    const subscriptionProvider = new SubscriptionProvider();
-    const spy = jest.spyOn(subscriptionProvider, 'canceled');
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -42,10 +42,7 @@ describe('BraintreeWebhookController', async () => {
         BraintreeWebhookModule,
       ],
       providers: [SubscriptionProvider],
-    })
-    .overrideProvider(SubscriptionProvider)
-    .useValue(subscriptionProvider)
-    .compile();
+    }).compile();
     
     const gateway = braintree.connect({
       environment: braintree.Environment.Sandbox,
@@ -67,8 +64,6 @@ describe('BraintreeWebhookController', async () => {
 
     webhookProvider.handle(webhookNotification);
 
-    // expect(spy).toHaveBeenCalled();
-    // expect(spy).toHaveBeenCalledTimes(1);
-    // expect(spy).toHaveBeenCalledWith(webhookNotification);
+    expect(SubscriptionProvider.called).toBeTruthy();
   });
 });
