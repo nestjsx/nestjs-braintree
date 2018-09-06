@@ -88,7 +88,7 @@ describe('BraintreeWebhookController', async () => {
       @BraintreeSubscriptionCanceled()
       canceled () {
         console.log('this', this);
-        //this.uselessProvider.callMe();
+        this.uselessProvider.callMe();
       }
 
     }
