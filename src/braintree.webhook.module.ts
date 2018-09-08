@@ -6,7 +6,7 @@ import { metadata as NEST_METADATA_CONSTANTS } from '@nestjs/common/constants';
 import BraintreeModule from './braintree.module';
 import { ComponentMetatype } from '@nestjs/core/injector/module';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
-import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED, BRAINTREE_WEBHOOK_PROVIDER_HANDLERS } from './braintree.constants';
+import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED, BRAINTREE_WEBHOOK_PROVIDER_HANDLERS, BRAINTREE_WEBHOOK_METHOD } from './braintree.constants';
 import {BraintreeWebhookMethodTreeInterface} from './interfaces';
 
 const methods: BraintreeWebhookMethodTreeInterface = { 
@@ -50,14 +50,10 @@ export default class BraintreeWebhookModule {
 					method,
         );
 
-				[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED].forEach(hook => {
-					if (Reflect.getMetadata(
-						hook,
-						descriptor.value,
-					) ) {
-            methods[hook].push(provider['prototype'][method]);
-          }
-        });
+        const hook = Reflect.getMetadata(BRAINTREE_WEBHOOK_METHOD, descriptor.value);
+
+        if (hook && methods.hasOwnProperty(hook)) methods[hook].push(provider['prototype'][method]);
+
       });
 
     });

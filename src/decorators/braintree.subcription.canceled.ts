@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED } from './../braintree.constants';
+import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_METHOD } from './../braintree.constants';
 
 export default (): MethodDecorator => {
   return (
@@ -10,13 +10,12 @@ export default (): MethodDecorator => {
     const originalMethod = descriptor.value;
     
     descriptor.value = function(...args: any[]) {
-      console.log('this', this);
       return originalMethod.apply(this, args);
     };
 
     Reflect.defineMetadata(
+      BRAINTREE_WEBHOOK_METHOD,
       BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED,
-      true,
       descriptor.value,
     );
     return descriptor;
