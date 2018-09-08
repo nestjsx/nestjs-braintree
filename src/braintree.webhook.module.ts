@@ -52,7 +52,7 @@ export default class BraintreeWebhookModule {
 
         const hook = Reflect.getMetadata(BRAINTREE_WEBHOOK_METHOD, descriptor.value);
 
-        if (hook && methods.hasOwnProperty(hook)) methods[hook].push(provider['prototype'][method]);
+        if (hook && methods.hasOwnProperty(hook)) methods[hook].push(provider['prototype'][method].bind(provider));
 
       });
 
