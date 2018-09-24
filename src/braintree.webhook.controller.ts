@@ -31,7 +31,7 @@ export default class BraintreeWebhookController {
 
     //TODO call webhookProvider 
     //TODO again see braintree to see how to handle errors
-    this.webhookProvider.handle(webhook);
+    await this.webhookProvider.handle(webhook);
 
     response.status(HttpStatus.OK);
   }

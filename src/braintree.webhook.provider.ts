@@ -18,13 +18,15 @@ export default class BraintreeWebhookProvider {
      [BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: [],
    };
 
-  handle(webhook: BraintreeWebhookNotificationInterface): void {
+  async handle(webhook: BraintreeWebhookNotificationInterface): Promise<void> {
   
     if (Object.keys(this.methods).includes(webhook.kind)) {
-      this.methods[webhook.kind].forEach((methodProto: BraintreeWebhookMethodInterface) => {
-        //TODO add try catch maybe?
-        //TODO resolve promises? 
-        this.providers[methodProto.provider][methodProto.method](webhook);
+      this.methods[webhook.kind].forEach(async (methodProto: BraintreeWebhookMethodInterface) => {
+        try {
+          await this.providers[methodProto.provider][methodProto.method](webhook);
+        } catch(e) {
+          Logger.error(`There was an error calling ${methodProto.method} from ${methodProto.provider}`, e.stack, 'BraintreeWebhookProvider');
+        }
       });
     }
   }
