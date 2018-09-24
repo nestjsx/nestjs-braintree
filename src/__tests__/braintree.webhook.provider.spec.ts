@@ -7,11 +7,11 @@ import {
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
   BraintreeProvider,
+  BraintreeWebhookHandler,
 } from './..';
 import * as braintree from 'braintree';
 import BraintreeWebhookProvider from '../braintree.webhook.provider';
 import { Injectable } from '@nestjs/common';
-import { BraintreeWebhookHandler } from '../decorators';
 
 describe('BraintreeWebhookController', async () => {
   it('Decorator methods should be called from WebhookProvider', async () => {
@@ -120,8 +120,6 @@ describe('BraintreeWebhookController', async () => {
 
     webhookProvider.handle(webhookNotification);
 
-    //TODO resolve the BraintreeWebhookProvider::handle method to use the method's contructor
-    //issue is `call(this, method)` from the handle method uses BraintreeWebhookProvider as constructor
     expect(UselessProvider.called).toBeTruthy();
   });
 });

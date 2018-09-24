@@ -97,9 +97,11 @@ import {
   BraintreeWebhookModule,
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
+  BraintreeWebhookHandler,
 } from 'nestjs-braintree';
 import { ConfigModule, ConfigService } from 'nestjs-config';
 
+@BraintreeWebhookHandler()
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()
   canceled() {
@@ -124,6 +126,24 @@ class SubscriptionProvider {
   providers: [SubscriptionProvider],
 })
 export default class AppModule {}
+```
+
+### Use Example 
+The idea of the Braintree Webhook Module is to make implementation actions a lot easier. For example we can build a provider like this one to cancel canceled subscriptions. 
+
+```ts
+
+@BraintreeWebhookHandler()
+class SubscriptionProvider {
+  constructor(private readonly subscriptionProvider: SubscriptionProvider) {}
+
+  @BraintreeSubscriptionCanceled()
+  async canceled(webhook) {
+    const subscription = await this.subscriptonProvider.findByBraintreeId(webhook.subscription.id);
+    subscription.active = false;
+    this.subscriptionProvider.update(subscription);
+  }
+}
 ```
 
 ## Transactions
