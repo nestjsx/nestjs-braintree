@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as braintree from 'braintree';
 import { ConfigService, ConfigModule } from 'nestjs-config';
 import * as path from 'path';
@@ -8,6 +8,7 @@ import {
   BraintreeProvider,
   InjectBraintreeProvider,
 } from '..';
+import { Injectable, Module } from '@nestjs/common';
 
 describe('Braintree Module', () => {
   it('Does it instance with options using registry', async () => {
@@ -83,5 +84,27 @@ describe('Braintree Module', () => {
     const provider = module.get<TestProvider>(TestProvider);
 
     expect(provider.getProvider()).toBeInstanceOf(BraintreeProvider);
+  });
+  it('BraintreeModule.forFeature', async () => {
+    @Module({
+      imports: [BraintreeModule.forFeature()],
+    })
+    class TestModule {}
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        BraintreeModule.forRoot({
+          environment: braintree.Environment.Sandbox,
+          merchantId: 'merchantId',
+          publicKey: 'publicKey',
+          privateKey: 'privateKey',
+        }),
+        TestModule,
+      ],
+    }).compile();
+
+    const testProvider = await module.select(TestModule).get(BraintreeProvider);
+
+    expect(testProvider).toBeInstanceOf(BraintreeProvider);
   });
 });

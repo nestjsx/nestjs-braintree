@@ -1,26 +1,50 @@
-import {Injectable, Inject} from '@nestjs/common';
-import {
-  BraintreeWebhookMethodTreeInterface, 
+import {Injectable, Provider, Logger} from '@nestjs/common';
+import { 
   BraintreeWebhookNotificationInterface,
+  BraintreeWebhookMethodInterface,
+  BraintreeWebhookMethodTreeInterface,
 } from './interfaces';
-import { BRAINTREE_WEBHOOK_PROVIDER_HANDLERS } from './braintree.constants';
+import { 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED,
+} from './braintree.constants';
 
 @Injectable()
 export default class BraintreeWebhookProvider {
 
-  constructor(
-    @Inject(BRAINTREE_WEBHOOK_PROVIDER_HANDLERS) private readonly methods: BraintreeWebhookMethodTreeInterface,
-  ) {}
+   private providers: {[k: string]: Provider} = {};
+   private methods: BraintreeWebhookMethodTreeInterface = {
+     [BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [],
+     [BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: [],
+   };
 
-  handle(webhook: BraintreeWebhookNotificationInterface): boolean {
-    
+  async handle(webhook: BraintreeWebhookNotificationInterface): Promise<void> {
+  
     if (Object.keys(this.methods).includes(webhook.kind)) {
-      this.methods[webhook.kind].forEach((method: Function) => {
-        //TODO should I use Reflect to see what the injection is? Should I add a @Webhook() decorator?
-        method.call(this, webhook);
+      this.methods[webhook.kind].forEach(async (methodProto: BraintreeWebhookMethodInterface) => {
+        try {
+          await this.providers[methodProto.provider][methodProto.method](webhook);
+        } catch(e) {
+          Logger.error(`There was an error calling ${methodProto.method} from ${methodProto.provider}`, e.stack, 'BraintreeWebhookProvider');
+        }
       });
     }
-
-    return true;
   }
+
+  addProvider(provider: Provider) {
+    this.providers[provider.constructor.name] = provider;
+    Logger.log(`Added provider [${provider.constructor.name}]`, 'BraintreeWebhookProvider');
+  }
+
+  addMethod(hook: string, method: string, provider: string) {
+    this.methods[hook] = [
+      ...this.methods[hook],
+      {
+        provider,
+        method,
+      },
+    ];
+    Logger.log(`Added method [${method}]`, 'BraintreeWebhookProvider');
+  }
+
 }

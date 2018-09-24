@@ -1,74 +1,57 @@
-import {Module} from '@nestjs/common';
+import {Module, OnModuleInit,} from '@nestjs/common';
+import {ModuleRef} from '@nestjs/core';
 import BraintreeWebhookController from './braintree.webhook.controller';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
-import { ModulesContainer } from '@nestjs/core/injector';
-import { metadata as NEST_METADATA_CONSTANTS } from '@nestjs/common/constants';
 import BraintreeModule from './braintree.module';
-import { ComponentMetatype } from '@nestjs/core/injector/module';
+import { ModulesContainer } from '@nestjs/core/injector/modules-container';
+import { metadata as NEST_METADATA_CONSTANTS } from '@nestjs/common/constants';
+import { BRAINTREE_WEBHOOK_PROVIDER, BRAINTREE_WEBHOOK_METHOD } from './braintree.constants';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
-import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED, BRAINTREE_WEBHOOK_PROVIDER_HANDLERS } from './braintree.constants';
-import {BraintreeWebhookMethodTreeInterface} from './interfaces';
-
-const methods: BraintreeWebhookMethodTreeInterface = { 
-	[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [], 
-	[BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: [],
-};
+import { Injectable } from '@nestjs/common/interfaces';
 
 @Module({
-  imports: [BraintreeModule.forFeature()],
-  providers: [
-    {
-      provide: BRAINTREE_WEBHOOK_PROVIDER_HANDLERS,
-      useFactory: (moduleContainer: ModulesContainer) => {
-        BraintreeWebhookModule.getBraintreeEventHandlers([...moduleContainer.values()]);
-        return BraintreeWebhookModule.resolveMethods(methods);
-      },
-      inject: [ModulesContainer],
-    },
-    BraintreeWebhookProvider,
-  ],
+  imports: [BraintreeModule],
+  providers: [BraintreeWebhookProvider],
   controllers: [BraintreeWebhookController],
 })
-export default class BraintreeWebhookModule {
-  public static getBraintreeEventHandlers(modules: any[]) {
-    modules.forEach(({metatype}) => {
-      const metadata: ComponentMetatype[] =
-      Reflect.getMetadata(NEST_METADATA_CONSTANTS.PROVIDERS, metatype) || [];
+export default class BraintreeWebhookModule implements OnModuleInit {
 
-      if (metadata.length >= 1) BraintreeWebhookModule.setupProviders([...metadata.filter(metatype => typeof metatype === 'function')]);
-    });
+  constructor(
+    private readonly moduleRef: ModuleRef, 
+    private readonly modulesContainer: ModulesContainer, 
+    private readonly braintreeWebhookProvider: BraintreeWebhookProvider,
+  ) {
+    this.onModuleInit();
   }
 
-  private static setupProviders(providers: ComponentMetatype[]) {
-    const metadataScanner = new MetadataScanner();
+  onModuleInit() {
+    [...this.modulesContainer.values()].forEach(({metatype}) => {
+      const metadata = Reflect.getMetadata(NEST_METADATA_CONSTANTS.PROVIDERS, metatype) || [];
+      const providers = [...metadata.filter(metatype => typeof metatype === 'function')];
+      providers.map(provider => {
+        if (Reflect.getOwnMetadata(BRAINTREE_WEBHOOK_PROVIDER, provider)) {
 
-    providers.map(provider => {
-    	metadataScanner.scanFromPrototype(null, provider['prototype'], method => {
+          const realProvider = this.moduleRef.get(provider, {strict: false});
 
-				const descriptor = Reflect.getOwnPropertyDescriptor(
-					provider['prototype'],
-					method,
-        );
+          this.braintreeWebhookProvider.addProvider(realProvider);
 
-				[BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED].forEach(hook => {
-					if (Reflect.getMetadata(
-						hook,
-						descriptor.value,
-					) ) {
-            methods[hook].push(provider['prototype'][method]);
-          }
-        });
+          const metadataScanner = new MetadataScanner();
+
+          metadataScanner.scanFromPrototype<Injectable, any>(null, provider['prototype'], method => {
+            const descriptor = Reflect.getOwnPropertyDescriptor(
+              provider['prototype'],
+              method,
+            );
+
+            const hook = Reflect.getMetadata(BRAINTREE_WEBHOOK_METHOD, descriptor.value);
+
+            if (hook) {
+              this.braintreeWebhookProvider.addMethod(hook, method, realProvider.constructor.name);
+            }
+          });
+
+        }
       });
-
     });
-  }
-
-  public static resolveMethods(methods: BraintreeWebhookMethodTreeInterface): BraintreeWebhookMethodTreeInterface {
-    const handlers = {};
-    Object.keys(methods).forEach(hook => {
-      handlers[hook] = new Set(methods[hook]);
-    });
-
-    return handlers;
   }
 }

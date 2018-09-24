@@ -11,14 +11,10 @@ import {
 
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()
-  canceled() {
-
-  }
+  canceled() {}
 
   @BraintreeSubscriptionExpired()
-  expired() {
-
-  }
+  expired() {}
 }
 
 describe('BraintreeWebhookController', async () => {
