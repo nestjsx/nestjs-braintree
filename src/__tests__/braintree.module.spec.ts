@@ -86,12 +86,10 @@ describe('Braintree Module', () => {
     expect(provider.getProvider()).toBeInstanceOf(BraintreeProvider);
   });
   it('BraintreeModule.forFeature', async () => {
-
     @Module({
       imports: [BraintreeModule.forFeature()],
     })
-    class TestModule {
-    }
+    class TestModule {}
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [

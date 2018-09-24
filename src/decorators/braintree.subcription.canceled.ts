@@ -10,7 +10,6 @@ export default (): MethodDecorator => {
     key: string | symbol,
     descriptor: PropertyDescriptor,
   ) => {
-
     Reflect.defineMetadata(
       BRAINTREE_WEBHOOK_METHOD,
       BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED,
