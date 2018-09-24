@@ -103,7 +103,7 @@ describe('Braintree Module', () => {
       ],
     }).compile();
 
-    const testProvider = await module.select(TestModule).get(BraintreeProvider);
+    const testProvider = module.select(TestModule).get(BraintreeProvider);
 
     expect(testProvider).toBeInstanceOf(BraintreeProvider);
   });

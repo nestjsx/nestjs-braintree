@@ -12,6 +12,8 @@ import {
 import * as braintree from 'braintree';
 import BraintreeWebhookProvider from '../braintree.webhook.provider';
 import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import { ModulesContainer } from '@nestjs/core/injector/modules-container';
 
 describe('BraintreeWebhookController', async () => {
   it('Decorator methods should be called from WebhookProvider', async () => {
@@ -121,5 +123,31 @@ describe('BraintreeWebhookController', async () => {
     webhookProvider.handle(webhookNotification);
 
     expect(UselessProvider.called).toBeTruthy();
+  });
+
+  it('Instances', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        BraintreeModule.forRoot({
+          environment: braintree.Environment.Sandbox,
+          merchantId: 'merchantId',
+          publicKey: 'publicKey',
+          privateKey: 'privateKey',
+        }),
+        BraintreeWebhookModule,
+      ],
+    }).compile();
+
+    const braintreeWebhookModule = module.get<BraintreeWebhookModule>(
+      BraintreeWebhookModule,
+    );
+
+    expect(braintreeWebhookModule.moduleRef).toBeInstanceOf(ModuleRef);
+    expect(braintreeWebhookModule.modulesContainer).toBeInstanceOf(
+      ModulesContainer,
+    );
+    expect(braintreeWebhookModule.braintreeWebhookProvider).toBeInstanceOf(
+      BraintreeWebhookProvider,
+    );
   });
 });
