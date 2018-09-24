@@ -129,19 +129,31 @@ export default class AppModule {}
 ```
 
 ### Use Example 
-The idea of the Braintree Webhook Module is to make implementation actions a lot easier. For example we can build a provider like this one to cancel canceled subscriptions. 
+The idea of the Braintree Webhook Module is to make implementation of actions a lot easier. For example we can build a provider like this one to cancel canceled subscriptions. 
 
 ```ts
-
 @BraintreeWebhookHandler()
-class SubscriptionProvider {
-  constructor(private readonly subscriptionProvider: SubscriptionProvider) {}
+export class SubscriptionProvider {
+  constructor(@InjectRepository(Subscription) private readonly subscriptionRepository: Repository<Subscription>) {}
+
+  async findByBraintreeId(id: string): Promise<Subscription|null> {
+    return await this.repository.find({
+      where: braintreeId: id,
+    });
+  }
+
+  async update(subscription: Subscription): Promise<boolean> {
+    return await this.subscriptionRepository.update(subscription);
+  }
 
   @BraintreeSubscriptionCanceled()
   async canceled(webhook) {
-    const subscription = await this.subscriptonProvider.findByBraintreeId(webhook.subscription.id);
+    const subscription = await this.findByBraintreeId(webhook.subscription.id);
+    if (!subscription) {
+      return;
+    }
     subscription.active = false;
-    this.subscriptionProvider.update(subscription);
+    await this.update(subscription);
   }
 }
 ```
