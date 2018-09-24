@@ -14,9 +14,7 @@ import { Injectable } from '@nestjs/common';
 import { BraintreeWebhookHandler } from '../decorators';
 
 describe('BraintreeWebhookController', async () => {
-
   it('Decorator methods should be called from WebhookProvider', async () => {
-
     @BraintreeWebhookHandler()
     class SubscriptionProvider {
       public static called = false;
@@ -28,9 +26,7 @@ describe('BraintreeWebhookController', async () => {
       }
 
       @BraintreeSubscriptionExpired()
-      expired(webhook) {
-        
-      }
+      expired(webhook) {}
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -46,7 +42,7 @@ describe('BraintreeWebhookController', async () => {
       ],
       providers: [SubscriptionProvider],
     }).compile();
-    
+
     const gateway = braintree.connect({
       environment: braintree.Environment.Sandbox,
       merchantId: 'merchantId',
@@ -71,7 +67,6 @@ describe('BraintreeWebhookController', async () => {
   });
 
   it('Make sure providers are still instanced with DI', async () => {
-
     @Injectable()
     class UselessProvider {
       public static called = false;
@@ -90,7 +85,6 @@ describe('BraintreeWebhookController', async () => {
       canceled() {
         this.uselessProvider.callMe();
       }
-
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -126,7 +120,7 @@ describe('BraintreeWebhookController', async () => {
 
     webhookProvider.handle(webhookNotification);
 
-    //TODO resolve the BraintreeWebhookProvider::handle method to use the method's contructor 
+    //TODO resolve the BraintreeWebhookProvider::handle method to use the method's contructor
     //issue is `call(this, method)` from the handle method uses BraintreeWebhookProvider as constructor
     expect(UselessProvider.called).toBeTruthy();
   });

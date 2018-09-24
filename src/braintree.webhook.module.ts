@@ -16,7 +16,11 @@ import { Injectable } from '@nestjs/common/interfaces';
 })
 export default class BraintreeWebhookModule implements OnModuleInit {
 
-  constructor(private readonly moduleRef: ModuleRef, private readonly modulesContainer: ModulesContainer, private readonly braintreeWebhookProvider: BraintreeWebhookProvider) {
+  constructor(
+    private readonly moduleRef: ModuleRef, 
+    private readonly modulesContainer: ModulesContainer, 
+    private readonly braintreeWebhookProvider: BraintreeWebhookProvider,
+  ) {
     this.onModuleInit();
   }
 

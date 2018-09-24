@@ -1,5 +1,8 @@
 import 'reflect-metadata';
-import { BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED, BRAINTREE_WEBHOOK_METHOD } from './../braintree.constants';
+import {
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED,
+  BRAINTREE_WEBHOOK_METHOD,
+} from './../braintree.constants';
 
 export default (): MethodDecorator => {
   return (
@@ -8,11 +11,11 @@ export default (): MethodDecorator => {
     descriptor: PropertyDescriptor,
   ) => {
     const originalMethod = descriptor.value;
-    
+
     descriptor.value = function(...args: any[]) {
       return originalMethod.apply(this, args);
     };
-    
+
     Reflect.defineMetadata(
       BRAINTREE_WEBHOOK_METHOD,
       BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED,
