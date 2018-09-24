@@ -1,40 +1,37 @@
-import {Injectable, Provider} from '@nestjs/common';
+import {Injectable, Provider, Logger} from '@nestjs/common';
 import { 
   BraintreeWebhookNotificationInterface,
+  BraintreeWebhookMethodInterface,
+  BraintreeWebhookMethodTreeInterface,
 } from './interfaces';
-import { BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED } from './braintree.constants';
+import { 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED,
+} from './braintree.constants';
 
 @Injectable()
 export default class BraintreeWebhookProvider {
 
    private providers: {[k: string]: Provider} = {};
-   private methods: {[k: string]: {
-     provider: string,
-     method: string,
-   }[]} = {
+   private methods: BraintreeWebhookMethodTreeInterface = {
      [BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED]: [],
      [BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED]: [],
    };
 
-  handle(webhook: BraintreeWebhookNotificationInterface): boolean {
-    
-  console.log('providers', this.providers);
-    
-
+  handle(webhook: BraintreeWebhookNotificationInterface): void {
+  
     if (Object.keys(this.methods).includes(webhook.kind)) {
-      this.methods[webhook.kind].forEach(methodProto => {
-        console.log('methodProto', methodProto);
-        console.log('result', this.providers[methodProto.provider][methodProto.method](webhook));
+      this.methods[webhook.kind].forEach((methodProto: BraintreeWebhookMethodInterface) => {
+        //TODO add try catch maybe?
+        //TODO resolve promises? 
+        this.providers[methodProto.provider][methodProto.method](webhook);
       });
     }
-
-    return true;
   }
 
   addProvider(provider: Provider) {
-    console.log('addProvider', provider);
     this.providers[provider.constructor.name] = provider;
-    console.log('this.providers', this.providers);
+    Logger.log(`Added provider [${provider.constructor.name}]`, 'BraintreeWebhookProvider');
   }
 
   addMethod(hook: string, method: string, provider: string) {
@@ -45,6 +42,7 @@ export default class BraintreeWebhookProvider {
         method,
       },
     ];
+    Logger.log(`Added method [${method}]`, 'BraintreeWebhookProvider');
   }
 
 }

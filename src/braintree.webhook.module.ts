@@ -31,8 +31,6 @@ export default class BraintreeWebhookModule implements OnModuleInit {
 
           this.braintreeWebhookProvider.addProvider(realProvider);
 
-          //Now cycle through and add methods
-
           const metadataScanner = new MetadataScanner();
 
           metadataScanner.scanFromPrototype<Injectable, any>(null, provider['prototype'], method => {
