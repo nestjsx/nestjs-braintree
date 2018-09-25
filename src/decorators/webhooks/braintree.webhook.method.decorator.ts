@@ -1,10 +1,9 @@
 import 'reflect-metadata';
 import {
-  BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED,
   BRAINTREE_WEBHOOK_METHOD,
-} from './../braintree.constants';
+} from './../../braintree.constants';
 
-export default (): MethodDecorator => {
+export const BraintreeWebhookMethodDecorator = (method) => (): MethodDecorator => {
   return (
     target: Object,
     key: string | symbol,
@@ -12,7 +11,7 @@ export default (): MethodDecorator => {
   ) => {
     Reflect.defineMetadata(
       BRAINTREE_WEBHOOK_METHOD,
-      BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED,
+      method,
       descriptor.value,
     );
     return descriptor;

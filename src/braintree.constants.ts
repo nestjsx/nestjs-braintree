@@ -1,5 +1,10 @@
 export const BRAINTREE_OPTIONS_PROVIDER = 'BRAINTREE_OPTIONS_PROVIDER';
 export const BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED = 'subscription_canceled';
 export const BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED = 'subscription_expired';
+export const BRAINTREE_WEBHOOK_SUBSCRIPTION_CHARGED_SUCCESSFULLY = 'subscription_charged_successfully';
+export const BRAINTREE_WEBHOOK_SUBSCRIPTION_CHARGED_UNSUCCESSFULLY = 'subscription_charged_unsuccessfully';
+export const BRAINTREE_WEBHOOK_SUBSCRIPTION_WENT_ACTIVE = 'subscription_went_active';
+export const BRAINTREE_WEBHOOK_SUBSCRIPTION_TRIAL_ENDED = 'subscription_trial_ended';
+export const BRAINTREE_WEBHOOK_SUBSCRIPTION_WENT_PAST_DUE = 'subscription_went_past_due';
 export const BRAINTREE_WEBHOOK_METHOD = 'BRAINTREE_WEBHOOK_METHOD';
 export const BRAINTREE_WEBHOOK_PROVIDER = 'BRAINTREE_WEBHOOK_PROVIDER';

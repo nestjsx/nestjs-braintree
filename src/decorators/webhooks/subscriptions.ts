@@ -1,0 +1,18 @@
+import {
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_CHARGED_SUCCESSFULLY, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_CHARGED_UNSUCCESSFULLY, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_TRIAL_ENDED, 
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_WENT_ACTIVE,
+  BRAINTREE_WEBHOOK_SUBSCRIPTION_WENT_PAST_DUE
+} from './../../braintree.constants';
+import {BraintreeWebhookMethodDecorator} from './braintree.webhook.method.decorator';
+
+export const BraintreeSubscriptionCanceled = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_CANCELED);
+export const BraintreeSubscriptionExpired = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_EXPIRED);
+export const BraintreeSubscriptionChargedSuccessfully = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_CHARGED_SUCCESSFULLY);
+export const BraintreeSubscriptionChargedUnSuccessfully = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_CHARGED_UNSUCCESSFULLY);
+export const BraintreeSubscriptionTrialEnded = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_TRIAL_ENDED);
+export const BraintreeSubscriptionWentActive = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_WENT_ACTIVE);
+export const BraintreeSubscriptionWentPastDue = BraintreeWebhookMethodDecorator(BRAINTREE_WEBHOOK_SUBSCRIPTION_WENT_PAST_DUE);

@@ -158,6 +158,20 @@ export class SubscriptionProvider {
 }
 ```
 
+### Available webhooks 
+
+Shortname | Braintree webhook name/const/key | NestJS decorator
+--- | --- | ---
+Subscription Canceled | `subscription_canceled` | `@BraintreeSubscriptionCanceled()`
+Subscription Expired | `subscription_expired` | `@BraintreeSubscriptionExpired()`
+Subscription Charged Successfully | `subscription_charged_successfully` | `@BraintreeSubscriptionChargedSuccessfully()`
+Subscription Charged Unsuccessfully | `subscription_charged_unsuccessfully` | `@BraintreeSubscriptionChargedUnsuccessfully()`
+Subscription Went Active | `subscription_went_active` | `@BraintreeSubscriptionWentActive()`
+Subscription Went Past Due | `subscription_went_past_due` | `@BraintreeSubscriptionWentPastDue()`
+Subscription Trial Ended | `subscription_trial_ended` | `@BraintreeSubscriptionTrialEnded()`
+
+You can find out more about the subscriptions [here](https://developers.braintreepayments.com/reference/general/webhooks/overview).
+
 ## Transactions
 
 Braintree is also capable of making one off transactions
