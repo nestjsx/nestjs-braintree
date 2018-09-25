@@ -24,6 +24,7 @@
     "jest": "^23.5.0",
     "nestjs-config": "^1.2.2",
     "prettier": "^1.14.2",
+    "supertest": "^3.3.0",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.3"
   },

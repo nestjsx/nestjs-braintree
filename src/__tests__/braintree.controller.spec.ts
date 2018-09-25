@@ -8,6 +8,8 @@ import {
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
 } from './..';
+import BraintreeProvider from '../braintree.provider';
+import {request} from 'supertest';
 
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()
