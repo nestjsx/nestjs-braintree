@@ -170,7 +170,7 @@ Subscription Went Active | `subscription_went_active` | `@BraintreeSubscriptionW
 Subscription Went Past Due | `subscription_went_past_due` | `@BraintreeSubscriptionWentPastDue()`
 Subscription Trial Ended | `subscription_trial_ended` | `@BraintreeSubscriptionTrialEnded()`
 
-You can find out more about the subscriptions [here](https://developers.braintreepayments.com/reference/general/webhooks/overview).
+You can find out more about the webhooks [here](https://developers.braintreepayments.com/reference/general/webhooks/overview). 
 
 ## Transactions
 
