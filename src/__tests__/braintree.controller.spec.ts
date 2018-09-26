@@ -9,7 +9,7 @@ import {
   BraintreeSubscriptionExpired,
 } from './..';
 import BraintreeProvider from '../braintree.provider';
-import {request} from 'supertest';
+import { request } from 'supertest';
 
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()

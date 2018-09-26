@@ -1,4 +1,4 @@
-import {Injectable, Provider, Logger} from '@nestjs/common';
+import {Injectable, Provider, Logger, HttpException} from '@nestjs/common';
 import { 
   BraintreeWebhookNotificationInterface,
   BraintreeWebhookMethodInterface,
@@ -29,13 +29,14 @@ export default class BraintreeWebhookProvider {
    };
 
   async handle(webhook: BraintreeWebhookNotificationInterface): Promise<void> {
-  
+
     if (Object.keys(this.methods).includes(webhook.kind)) {
       this.methods[webhook.kind].forEach(async (methodProto: BraintreeWebhookMethodInterface) => {
         try {
           await this.providers[methodProto.provider][methodProto.method](webhook);
         } catch(e) {
           Logger.error(`There was an error calling ${methodProto.method} from ${methodProto.provider}`, e.stack, 'BraintreeWebhookProvider');
+          throw HttpException;
         }
       });
     }
@@ -56,5 +57,4 @@ export default class BraintreeWebhookProvider {
     ];
     Logger.log(`Added method [${method}]`, 'BraintreeWebhookProvider');
   }
-
 }

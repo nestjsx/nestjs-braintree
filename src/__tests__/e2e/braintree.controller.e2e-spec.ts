@@ -6,6 +6,7 @@ import BraintreeModule from "../../braintree.module";
 import * as path from 'path';
 import * as request from 'supertest';
 import * as braintree from 'braintree';
+import { BraintreeWebhookHandler, BraintreeSubscriptionCanceled, BraintreeSubscriptionChargedSuccessfully } from "../../decorators";
 
 describe('BraintreeWebhookController', async () => {
   let app: INestApplication;
@@ -19,6 +20,20 @@ describe('BraintreeWebhookController', async () => {
   });
 
   beforeAll(async () => {
+
+    @BraintreeWebhookHandler()
+    class TestProvider {
+      @BraintreeSubscriptionCanceled()
+      canceled() {
+        return true;
+      }
+
+      @BraintreeSubscriptionChargedSuccessfully()
+      callMe() {
+        throw new Error('hello I am errors');
+      }
+    }
+
     module = await Test.createTestingModule({
       imports: [
         ConfigModule.load(
@@ -30,20 +45,23 @@ describe('BraintreeWebhookController', async () => {
         }),
         BraintreeWebhookModule,
       ],
+      providers: [TestProvider],
     }).compile();
 
     app = module.createNestApplication();
     await app.init();
   });
 
-  it('POST webhook', () => {
+  it('/braintree/webhook (POST) Canceled', async () => {
     const webhook = gateway.webhookTesting.sampleNotification(
       braintree.WebhookNotification.Kind.SubscriptionCanceled,
     );
-    return request(app.getHttpServer())
+    
+    return await request(app.getHttpServer())
       .post('/braintree/webhook')
+      .set('Content-Type', 'application/json')
       .send(webhook)
-      .expect(200);
+      .expect(201);
   });
 
   afterAll(async () => {
