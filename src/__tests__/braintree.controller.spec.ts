@@ -52,10 +52,16 @@ describe('BraintreeWebhookController', async () => {
     expect(provider).toBeInstanceOf(SubscriptionProvider);
   });
 
-  it('wehook controller instances',() => {
-    const braintreeWebhookController = module.get<BraintreeWebhookController>(BraintreeWebhookController);
+  it('wehook controller instances', () => {
+    const braintreeWebhookController = module.get<BraintreeWebhookController>(
+      BraintreeWebhookController,
+    );
 
-    expect(braintreeWebhookController.braintree).toBeInstanceOf(BraintreeProvider);
-    expect(braintreeWebhookController.webhookProvider).toBeInstanceOf(BraintreeWebhookProvider);
+    expect(braintreeWebhookController.braintree).toBeInstanceOf(
+      BraintreeProvider,
+    );
+    expect(braintreeWebhookController.webhookProvider).toBeInstanceOf(
+      BraintreeWebhookProvider,
+    );
   });
 });
