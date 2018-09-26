@@ -1,14 +1,14 @@
-import {Test, TestingModule} from '@nestjs/testing';
-import {BraintreeModule, BraintreeWebhookModule} from './../';
+import { Test, TestingModule } from '@nestjs/testing';
+import { BraintreeModule, BraintreeWebhookModule } from './../';
 import * as braintree from 'braintree';
-import { 
-  BraintreeWebhookHandler, 
-  BraintreeSubscriptionCanceled, 
-  BraintreeSubscriptionExpired, 
-  BraintreeSubscriptionChargedSuccessfully, 
-  BraintreeSubscriptionChargedUnSuccessfully, 
-  BraintreeSubscriptionTrialEnded, 
-  BraintreeSubscriptionWentPastDue, 
+import {
+  BraintreeWebhookHandler,
+  BraintreeSubscriptionCanceled,
+  BraintreeSubscriptionExpired,
+  BraintreeSubscriptionChargedSuccessfully,
+  BraintreeSubscriptionChargedUnSuccessfully,
+  BraintreeSubscriptionTrialEnded,
+  BraintreeSubscriptionWentPastDue,
   BraintreeSubscriptionWentActive,
 } from '../decorators';
 import BraintreeProvider from '../braintree.provider';
@@ -19,7 +19,6 @@ describe('Braintree Webhooks', async () => {
 
   @BraintreeWebhookHandler()
   class TestProvider {
-
     public static called = null;
 
     @BraintreeSubscriptionCanceled()
@@ -83,7 +82,6 @@ describe('Braintree Webhooks', async () => {
   });
 
   it('Canceled', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -96,11 +94,9 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('canceled');
-
   });
 
   it('Expired', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -113,11 +109,9 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('expired');
-
   });
 
   it('ChargedSuccessfully', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -130,11 +124,9 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('chargedSuccessfully');
-
   });
 
   it('ChargedUnSuccessfully', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -147,11 +139,9 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('chargedUnsuccessfully');
-
   });
 
   it('TrialEnded', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -164,11 +154,9 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('trialEnded');
-
   });
 
   it('wentPastDue', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -181,11 +169,9 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('wentPastDue');
-
   });
 
   it('wentActive', async () => {
-
     const braintreeProvider = module.get(BraintreeProvider);
     const braintreeWebhookProvider = module.get(BraintreeWebhookProvider);
 
@@ -198,6 +184,5 @@ describe('Braintree Webhooks', async () => {
     braintreeWebhookProvider.handle(webhookNotification);
 
     expect(TestProvider.called).toBe('wentActive');
-
   });
 });

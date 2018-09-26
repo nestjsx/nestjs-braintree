@@ -8,6 +8,8 @@ import {
   BraintreeSubscriptionCanceled,
   BraintreeSubscriptionExpired,
 } from './..';
+import BraintreeProvider from '../braintree.provider';
+import BraintreeWebhookProvider from '../braintree.webhook.provider';
 
 class SubscriptionProvider {
   @BraintreeSubscriptionCanceled()
@@ -48,5 +50,12 @@ describe('BraintreeWebhookController', async () => {
     const provider = module.get<SubscriptionProvider>(SubscriptionProvider);
 
     expect(provider).toBeInstanceOf(SubscriptionProvider);
+  });
+
+  it('wehook controller instances',() => {
+    const braintreeWebhookController = module.get<BraintreeWebhookController>(BraintreeWebhookController);
+
+    expect(braintreeWebhookController.braintree).toBeInstanceOf(BraintreeProvider);
+    expect(braintreeWebhookController.webhookProvider).toBeInstanceOf(BraintreeWebhookProvider);
   });
 });
