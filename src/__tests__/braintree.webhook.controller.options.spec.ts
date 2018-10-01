@@ -7,6 +7,26 @@ import { PATH_METADATA, METHOD_METADATA } from '@nestjs/common/constants';
 import { RequestMethod } from '@nestjs/common';
 
 describe('BraintreeWebhookController', () => {
+  it('Should instance with default route', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        BraintreeModule.forRoot({
+          environment: braintree.Environment.Sandbox,
+          merchantId: 'merchantId',
+          publicKey: 'publicKey',
+          privateKey: 'privateKey',
+        }),
+        BraintreeWebhookModule,
+      ],
+    }).compile();
+    const controller = module.get(BraintreeWebhookController);
+
+    expect(controller).toBeInstanceOf(BraintreeWebhookController);
+    expect(Reflect.getMetadata(PATH_METADATA, BraintreeWebhookController)).toBe('braintree');
+    expect(Reflect.getMetadata(METHOD_METADATA, Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value)).toBe(RequestMethod.POST);
+    expect(Reflect.getMetadata(PATH_METADATA, Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value)).toBe('webhook');
+  });
+  
   it('Should instance with forRoot', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
