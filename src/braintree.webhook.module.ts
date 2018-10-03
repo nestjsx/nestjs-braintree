@@ -7,12 +7,13 @@ import { ModulesContainer } from '@nestjs/core/injector/modules-container';
 import { metadata as NEST_METADATA_CONSTANTS } from '@nestjs/common/constants';
 import { BRAINTREE_WEBHOOK_PROVIDER, BRAINTREE_WEBHOOK_METHOD } from './braintree.constants';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
-import { Injectable } from '@nestjs/common/interfaces';
+import { Injectable, DynamicModule } from '@nestjs/common/interfaces';
+import { BraintreeWebhookOptionsInterface } from './interfaces';
 
 @Module({
   imports: [BraintreeModule],
   providers: [BraintreeWebhookProvider],
-  controllers: [BraintreeWebhookController],
+  controllers: [BraintreeWebhookController.forRoot('braintree', 'webhook')],
 })
 export default class BraintreeWebhookModule implements OnModuleInit {
 
@@ -53,5 +54,14 @@ export default class BraintreeWebhookModule implements OnModuleInit {
         }
       });
     });
+  }
+
+  public static forRoot(webhookOptions: BraintreeWebhookOptionsInterface): DynamicModule {
+    return {
+      module: BraintreeWebhookModule,
+      imports: [BraintreeModule],
+      providers: [BraintreeWebhookProvider],
+      controllers: [BraintreeWebhookController.forRoot(webhookOptions.root, webhookOptions.handle)],
+    };
   }
 }

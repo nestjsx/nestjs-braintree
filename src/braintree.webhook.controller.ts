@@ -1,15 +1,32 @@
-import {Controller, Req, Logger, Post, HttpException} from '@nestjs/common';
+import {Controller, Req, Logger, HttpException, Post, RequestMethod, Provider} from '@nestjs/common';
 import BraintreeProvider from './braintree.provider';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 import { BraintreeWebhookNotificationInterface } from './interfaces';
+import { PATH_METADATA, METHOD_METADATA } from '@nestjs/common/constants';
 
-//TODO make path configurable
-@Controller('braintree')
+@Controller()
 export default class BraintreeWebhookController {
 
-  constructor(private readonly braintree: BraintreeProvider, private readonly webhookProvider: BraintreeWebhookProvider) {}
+  constructor(
+    private readonly braintree: BraintreeProvider, 
+    private readonly webhookProvider: BraintreeWebhookProvider,
+  ) {}
 
-  @Post('webhook')
+  public static forRoot(root: string = 'braintree', handle: string = 'webhook') {
+    Reflect.defineMetadata(PATH_METADATA, root, BraintreeWebhookController);
+    Reflect.defineMetadata(
+      METHOD_METADATA, 
+      RequestMethod.POST,
+      Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value,
+    );
+    Reflect.defineMetadata(
+      PATH_METADATA,
+      handle,
+      Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value,
+    );
+    return BraintreeWebhookController;
+  }
+
   async handle(@Req() request) {
     let webhook: BraintreeWebhookNotificationInterface;
 

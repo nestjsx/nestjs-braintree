@@ -173,6 +173,29 @@ Subscription Trial Ended | `subscription_trial_ended` | `@BraintreeSubscriptionT
 
 You can find out more about the webhooks [here](https://developers.braintreepayments.com/reference/general/webhooks/overview). 
 
+#### Custom routing for webhooks
+You may want to divert from the default routing of `{your_domain}/braintree/webhook` for whatever reason. You can do so using the `forRoot` method on the `BraintreeWebhookModule` like so
+
+```ts
+@Module({
+  imports: [
+    ConfigModule.load('root/to/config/*/**.{ts,js}'),
+    BraintreeModule.forRootAsync({
+      useFactory: async (config: ConfigService) => config.get('braintree'),
+      inject: [ConfigService],
+    }),
+    BraintreeWebhookModule.forRoot({
+      root: 'replace-braintree',
+      handle: 'replace-webhook',
+    }),
+  ],
+  providers: [SubscriptionProvider],
+})
+export default class AppModule {}
+```
+
+The above will result in your route for your braintree webhooks being `{your_domain}/replace-braintree/replace-webhook`
+
 ## Transactions
 
 Braintree is also capable of making one off transactions
