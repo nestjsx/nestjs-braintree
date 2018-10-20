@@ -29,7 +29,6 @@ export default class BraintreeWebhookProvider {
    };
 
   async handle(webhook: BraintreeWebhookNotificationInterface): Promise<void> {
-
     if (Object.keys(this.methods).includes(webhook.kind)) {
       this.methods[webhook.kind].forEach(async (methodProto: BraintreeWebhookMethodInterface) => {
         try {

@@ -50,9 +50,9 @@ describe('Braintree Module', () => {
     const provider = module.get<BraintreeProvider>(BraintreeProvider);
 
     expect(options.environment).toBe(braintree.Environment.Sandbox);
-    expect(options.merchantId).toBe('merchantId');
-    expect(options.publicKey).toBe('publicKey');
-    expect(options.privateKey).toBe('privateKey');
+    expect(typeof options.merchantId).toBe('string');
+    expect(typeof options.publicKey).toBe('string');
+    expect(typeof options.privateKey).toBe('string');
     expect(provider).toBeInstanceOf(BraintreeProvider);
   });
 

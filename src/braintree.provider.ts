@@ -1,5 +1,13 @@
 import {Injectable, Inject} from '@nestjs/common';
-import { BraintreeOptions, BraintreeWebhookPayloadInterface, BraintreeWebhookNotificationInterface } from './interfaces';
+import { 
+  BraintreeOptions, 
+  BraintreeWebhookPayloadInterface, 
+  BraintreeWebhookNotificationInterface, 
+  BraintreeTransactionInterface,
+  BraintreeTransactionResultInterface,
+  BraintreeSubscriptionInterface,
+  BraintreeSubscriptionResultInterface,
+} from './interfaces';
 import * as braintree from 'braintree';
 import { BRAINTREE_OPTIONS_PROVIDER } from './braintree.constants';
 
@@ -16,7 +24,35 @@ export default class BraintreeProvider {
     return await this.gateway.webhookNotification.parse(payload.bt_signature, payload.bt_payload);
   }
 
-  //TODO add methods to handle creating a subscription
-  //TODO add methods to handle transactions
-  //TODO add methods for refunds 
+  async sale(transaction: BraintreeTransactionInterface): Promise<BraintreeTransactionResultInterface> {
+
+    return await this.gateway.transaction.sale(transaction);
+  }
+
+  async refund(transactionId: string, amount?: string, orderId?: string): Promise<BraintreeTransactionResultInterface> {
+    return await this.gateway.transaction.refund(transactionId, amount, orderId);
+  }
+
+  async find(transactionId: string): Promise<BraintreeTransactionResultInterface> {
+    return await this.gateway.transaction.find(transactionId);
+  }
+
+  async createSubscription(subscription: BraintreeSubscriptionInterface): Promise<BraintreeSubscriptionResultInterface> {
+    return await this.gateway.subscription.create(subscription);
+  }
+
+  async cancelSubscription(subscriptionId: string): Promise<BraintreeSubscriptionResultInterface> {
+    return await this.gateway.subscription.cancel(subscriptionId);
+  }
+
+  async findSubscription(subscriptionId: string): Promise<BraintreeSubscriptionResultInterface> {
+    return await this.gateway.subscription.find(subscriptionId);
+  }
+
+  async updateSubscription(subscriptionId: string, subscription: BraintreeSubscriptionInterface): Promise<BraintreeSubscriptionResultInterface> {
+    return await this.gateway.subscription.update(subscriptionId, subscription);
+  }
+
+  // TODO implement confusing looking search plans
+  // https://developers.braintreepayments.com/reference/request/subscription/search/node#search-results
 }
