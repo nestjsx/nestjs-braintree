@@ -137,9 +137,11 @@ The idea of the Braintree Webhook Module is to make implementation of actions a 
 export class SubscriptionProvider {
   constructor(@InjectRepository(Subscription) private readonly subscriptionRepository: Repository<Subscription>) {}
 
-  async findByBraintreeId(id: string): Promise<Subscription|null> {
-    return await this.repository.find({
-      where: braintreeId: id,
+  async findByBraintreeId(braintreeId: string): Promise<Subscription|null> {
+    return await this.subscriptionRepository.find({
+      where: {
+        braintreeId,
+      },
     });
   }
 
@@ -148,7 +150,7 @@ export class SubscriptionProvider {
   }
 
   @BraintreeSubscriptionCanceled()
-  async canceled(webhook) {
+  async canceled(webhook: BraintreeWebhook) {
     const subscription = await this.findByBraintreeId(webhook.subscription.id);
     if (!subscription) {
       return;
