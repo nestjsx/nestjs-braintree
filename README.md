@@ -214,8 +214,7 @@ class TransactionProvider {
   ) {}
 
   takePayment(amount: number) {
-    //Will probably be similar to sale https://developers.braintreepayments.com/guides/transactions/node#settlement
-    this.braintreeProvider.notImplementedYet(amount);
+    this.braintreeProvider.sale(amount);
   }
 }
 
