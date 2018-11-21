@@ -1,4 +1,4 @@
-import {Controller, Req, Logger, HttpException, Post, RequestMethod, Provider} from '@nestjs/common';
+import {Controller, Req, Logger, HttpException, RequestMethod} from '@nestjs/common';
 import BraintreeProvider from './braintree.provider';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 import { BraintreeWebhookNotificationInterface } from './interfaces';
@@ -29,10 +29,9 @@ export default class BraintreeWebhookController {
 
   async handle(@Req() request) {
     let webhook: BraintreeWebhookNotificationInterface;
-
 		try {
-       webhook = await this.braintree.parseWebhook({
-        bt_signature: request.body.bt_signature, 
+      webhook = await this.braintree.parseWebhook({
+        bt_signature: request.body.bt_signature,
         bt_payload: request.body.bt_payload,
       });
       await this.webhookProvider.handle(webhook);

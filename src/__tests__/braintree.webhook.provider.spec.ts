@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as path from 'path';
-import { ConfigModule, ConfigService } from 'nestjs-config';
 import {
   BraintreeModule,
   BraintreeWebhookModule,
@@ -33,12 +31,11 @@ describe('BraintreeWebhookController', async () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        ConfigModule.load(
-          path.resolve(__dirname, '__stubs__', 'config', '*.ts'),
-        ),
-        BraintreeModule.forRootAsync({
-          useFactory: async config => config.get('braintree'),
-          inject: [ConfigService],
+        BraintreeModule.forRoot({
+          environment: braintree.Environment.Sandbox,
+          merchantId: 'merchantId',
+          publicKey: 'publicKey',
+          privateKey: 'privateKey',
         }),
         BraintreeWebhookModule,
       ],

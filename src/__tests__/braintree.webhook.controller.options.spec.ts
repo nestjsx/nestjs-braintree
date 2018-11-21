@@ -1,4 +1,4 @@
-import {Test, TestingModule} from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import BraintreeModule from '../braintree.module';
 import BraintreeWebhookModule from '../braintree.webhook.module';
 import * as braintree from 'braintree';
@@ -22,11 +22,29 @@ describe('BraintreeWebhookController', () => {
     const controller = module.get(BraintreeWebhookController);
 
     expect(controller).toBeInstanceOf(BraintreeWebhookController);
-    expect(Reflect.getMetadata(PATH_METADATA, BraintreeWebhookController)).toBe('braintree');
-    expect(Reflect.getMetadata(METHOD_METADATA, Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value)).toBe(RequestMethod.POST);
-    expect(Reflect.getMetadata(PATH_METADATA, Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value)).toBe('webhook');
+    expect(Reflect.getMetadata(PATH_METADATA, BraintreeWebhookController)).toBe(
+      'braintree',
+    );
+    expect(
+      Reflect.getMetadata(
+        METHOD_METADATA,
+        Object.getOwnPropertyDescriptor(
+          BraintreeWebhookController.prototype,
+          'handle',
+        ).value,
+      ),
+    ).toBe(RequestMethod.POST);
+    expect(
+      Reflect.getMetadata(
+        PATH_METADATA,
+        Object.getOwnPropertyDescriptor(
+          BraintreeWebhookController.prototype,
+          'handle',
+        ).value,
+      ),
+    ).toBe('webhook');
   });
-  
+
   it('Should instance with forRoot', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -45,8 +63,26 @@ describe('BraintreeWebhookController', () => {
     const controller = module.get(BraintreeWebhookController);
 
     expect(controller).toBeInstanceOf(BraintreeWebhookController);
-    expect(Reflect.getMetadata(PATH_METADATA, BraintreeWebhookController)).toBe('testing');
-    expect(Reflect.getMetadata(METHOD_METADATA, Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value)).toBe(RequestMethod.POST);
-    expect(Reflect.getMetadata(PATH_METADATA, Object.getOwnPropertyDescriptor(BraintreeWebhookController.prototype, 'handle').value)).toBe('this');
+    expect(Reflect.getMetadata(PATH_METADATA, BraintreeWebhookController)).toBe(
+      'testing',
+    );
+    expect(
+      Reflect.getMetadata(
+        METHOD_METADATA,
+        Object.getOwnPropertyDescriptor(
+          BraintreeWebhookController.prototype,
+          'handle',
+        ).value,
+      ),
+    ).toBe(RequestMethod.POST);
+    expect(
+      Reflect.getMetadata(
+        PATH_METADATA,
+        Object.getOwnPropertyDescriptor(
+          BraintreeWebhookController.prototype,
+          'handle',
+        ).value,
+      ),
+    ).toBe('this');
   });
 });
