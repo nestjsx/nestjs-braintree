@@ -1,6 +1,6 @@
 {
   "name": "nestjs-braintree",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Nestjs braintree module",
   "main": "dist/index.js",
   "repository": "git@github.com:nestjs-community/nestjs-braintree.git",
