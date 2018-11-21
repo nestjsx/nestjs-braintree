@@ -86,6 +86,55 @@ export default {
 };
 ```
 
+## Transactions
+
+Braintree is capable of making one off transactions
+
+```typescript
+import { Module } from '@nestjs/common';
+import { BraintreeModule, InjectBraintreeProvider } from 'nestjs-braintree';
+import { ConfigModule, ConfigService } from 'nestjs-config';
+
+class TransactionProvider {
+  constructor(
+    @InjectBraintreeProvider()
+    private readonly braintreeProvider: BraintreeProvider,
+  ) {}
+
+  takePayment(amount: string, nonce: string) {
+    this.braintreeProvider.sale({
+      payment_method_nonce: nonce,
+      amount,
+    });
+  }
+}
+
+@Module({
+  imports: [
+    ConfigModule.load('root/to/config/*/**.{ts,js}'),
+    BraintreeModule.forRoot({
+      useFactory: async (config: ConfigService) => config.get('braintree'),
+      inject: [ConfigService],
+    }),
+  ],
+  providers: [TransactionProvider],
+})
+export default class AppModule {}
+```
+
+Avaliable methods relating to transactions are 
+
+#### Sale 
+`braintreeProvider.sale(transaction: BraintreeTransactionInterface): Promise<BraintreeTransactionResultInterface>`
+
+#### Refund
+`braintreeProvider.refund(transactionId: string, amount?: string, orderId?: string): Promise<BraintreeTransactionResultInterface>`
+
+#### Find
+`braintreeProvider.find(transactionId: string): Promise<BraintreeTransactionResultInterface>`
+
+> The braintree SDK does offer additional methods. I will implement them soon hopefully 
+
 ## Webhooks
 
 When using subscriptions with braintree, braintree will issue webhooks to your
@@ -197,36 +246,3 @@ export default class AppModule {}
 ```
 
 The above will result in your route for your braintree webhooks being `{your_domain}/replace-braintree/replace-webhook`
-
-## Transactions
-
-Braintree is also capable of making one off transactions
-
-```typescript
-import { Module } from '@nestjs/common';
-import { BraintreeModule, InjectBraintreeProvider } from 'nestjs-braintree';
-import { ConfigModule, ConfigService } from 'nestjs-config';
-
-class TransactionProvider {
-  constructor(
-    @InjectBraintreeProvider()
-    private readonly braintreeProvider: BraintreeProvider,
-  ) {}
-
-  takePayment(amount: number) {
-    this.braintreeProvider.sale(amount);
-  }
-}
-
-@Module({
-  imports: [
-    ConfigModule.load('root/to/config/*/**.{ts,js}'),
-    BraintreeModule.forRoot({
-      useFactory: async (config: ConfigService) => config.get('braintree'),
-      inject: [ConfigService],
-    }),
-  ],
-  providers: [TransactionProvider],
-})
-export default class AppModule {}
-```
