@@ -1,4 +1,4 @@
-import {Controller, Req, Logger, HttpException, Post, RequestMethod} from '@nestjs/common';
+import {Controller, Req, Logger, HttpException, RequestMethod} from '@nestjs/common';
 import BraintreeProvider from './braintree.provider';
 import BraintreeWebhookProvider from './braintree.webhook.provider';
 import { BraintreeWebhookNotificationInterface } from './interfaces';
