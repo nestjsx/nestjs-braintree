@@ -5,7 +5,6 @@ import { BraintreeModule, BraintreeProvider } from './../../src';
 
 const nonces = {
   valid: 'fake-valid-nonce',
-
 };
 
 describe('Braintree transaction methods', () => {
@@ -55,8 +54,8 @@ describe('Braintree transaction methods', () => {
   });
 
   //it('Refund Transaction', async () => {
-    //const refundResult = await provider.refund(transactionId);
+  //const refundResult = await provider.refund(transactionId);
 
-    //console.log('refund', refundResult);
+  //console.log('refund', refundResult);
   //});
 });
