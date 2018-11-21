@@ -30,8 +30,8 @@ export default class BraintreeWebhookController {
   async handle(@Req() request) {
     let webhook: BraintreeWebhookNotificationInterface;
 		try {
-       webhook = await this.braintree.parseWebhook({
-        bt_signature: request.body.bt_signature, 
+      webhook = await this.braintree.parseWebhook({
+        bt_signature: request.body.bt_signature,
         bt_payload: request.body.bt_payload,
       });
       await this.webhookProvider.handle(webhook);
