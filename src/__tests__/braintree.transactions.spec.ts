@@ -53,6 +53,14 @@ describe('Braintree transaction methods', () => {
     expect(transaction).toHaveProperty('updatedAt');
   });
 
+  it('Find with non valid transaction', async () => {
+    try {
+      const transaction = await provider.find('not-token');
+    } catch (e) {
+      expect(e.message).toBe('Not Found');
+    }
+  });
+
   //it('Refund Transaction', async () => {
   //const refundResult = await provider.refund(transactionId);
 
