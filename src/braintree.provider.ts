@@ -68,7 +68,7 @@ export default class BraintreeProvider {
     return await this.gateway.customer.update(id, customer);
   }
 
-  async deleteCustomer(id: string): Promise<boolean> {
+  async deleteCustomer(id: string): Promise<object> {
     return await this.gateway.customer.delete(id);
   }
 
