@@ -7,6 +7,7 @@ import {
   BraintreeTransactionResultInterface,
   BraintreeSubscriptionInterface,
   BraintreeSubscriptionResultInterface,
+  BraintreeCustomerInterface,
 } from './interfaces';
 import * as braintree from 'braintree';
 import { BRAINTREE_OPTIONS_PROVIDER } from './braintree.constants';
@@ -51,6 +52,24 @@ export default class BraintreeProvider {
 
   async updateSubscription(subscriptionId: string, subscription: BraintreeSubscriptionInterface): Promise<BraintreeSubscriptionResultInterface> {
     return await this.gateway.subscription.update(subscriptionId, subscription);
+  }
+
+  async createCustomer(customer: BraintreeCustomerInterface): Promise<{
+    customer: BraintreeCustomerInterface,
+    success: boolean,
+  }> {
+    return await this.gateway.customer.create(customer);
+  }
+
+  async updateCustomer(id: string, customer: BraintreeCustomerInterface): Promise<{
+    customer: BraintreeCustomerInterface,
+    success: boolean,
+  }> {
+    return await this.gateway.customer.update(id, customer);
+  }
+
+  async deleteCustomer(id: string): Promise<boolean> {
+    return await this.gateway.customer.delete(id);
   }
 
   // TODO implement confusing looking search plans
