@@ -1,9 +1,9 @@
 <p align="center"><img src="https://avatars1.githubusercontent.com/u/41109786?s=200&v=4"/></p>
 <p align="center">
-    <a href="https://travis-ci.org/nestjs-community/nestjs-braintree"><img src="https://travis-ci.org/nestjs-community/nestjs-braintree.svg?branch=master"/></a>
+    <a href="https://travis-ci.org/nestjsx/nestjs-braintree"><img src="https://travis-ci.org/nestjsx/nestjs-braintree.svg?branch=master"/></a>
     <a href="https://www.npmjs.com/package/nestjs-braintree"><img src="https://img.shields.io/npm/v/nestjs-braintree.svg"/></a>
-    <a href="https://github.com/nestjs-community/nestjs-braintree/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nestjs-community/nestjs-braintree.svg"/></a>
-    <a href='https://coveralls.io/github/nestjs-community/nestjs-braintree?branch=master'><img src='https://coveralls.io/repos/github/nestjs-community/nestjs-braintree/badge.svg?branch=master' alt='Coverage Status' /></a>
+    <a href="https://github.com/nestjsx/nestjs-braintree/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nestjsx/nestjs-braintree.svg"/></a>
+    <a href='https://coveralls.io/github/nestjsx/nestjs-braintree?branch=master'><img src='https://coveralls.io/repos/github/nestjsx/nestjs-braintree/badge.svg?branch=master' alt='Coverage Status' /></a>
 </p>
 <h1 align="center">Nestjs Braintree</h1>
 
