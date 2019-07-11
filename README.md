@@ -15,6 +15,8 @@
 
 ## Install
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nestjs-community/nestjs-braintree.svg)](https://greenkeeper.io/)
+
 ```bash
 $ yarn add nestjs-braintree
 ```
