@@ -122,7 +122,7 @@ class TransactionProvider {
 export default class AppModule {}
 ```
 
-Avaliable methods relating to transactions are 
+Available methods relating to transactions are 
 
 #### Sale 
 `braintreeProvider.sale(transaction: BraintreeTransactionInterface): Promise<BraintreeTransactionResultInterface>`
