@@ -122,8 +122,8 @@
     path-to-regexp "2.2.1"
 
 "@nestjs/testing@^5.2.2":
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-5.2.2.tgz#b1338bb0f54ccf5ea16661196bbd42c2403049b5"
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-5.7.4.tgz#418e993416bd0c1b27b3adf14cc7d59f4ff2a622"
   dependencies:
     deprecate "1.0.0"
     optional "0.1.4"
