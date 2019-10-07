@@ -15,7 +15,7 @@
     "gatway"
   ],
   "devDependencies": {
-    "@nestjs/common": "^5.2.2",
+    "@nestjs/common": "^6.8.2",
     "@nestjs/core": "^5.2.2",
     "@nestjs/testing": "^5.2.2",
     "@types/jest": "^23.3.1",
