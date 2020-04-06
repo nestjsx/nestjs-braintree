@@ -969,9 +969,9 @@ domexception@^1.0.1:
   dependencies:
     webidl-conversions "^4.0.2"
 
-dotenv@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.0.0.tgz#24e37c041741c5f4b25324958ebbc34bca965935"
+dotenv@^8.0.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -2615,10 +2615,10 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
 nestjs-config@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/nestjs-config/-/nestjs-config-1.2.2.tgz#b941cda4c8493a74ddc238d1b5c09fa574608b6b"
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/nestjs-config/-/nestjs-config-1.4.6.tgz#fc17392fee185442bdd7f5cf51dd447fe3553491"
   dependencies:
-    dotenv "^6.0.0"
+    dotenv "^8.0.0"
     glob "^7.1.2"
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
