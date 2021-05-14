@@ -416,6 +416,10 @@
   version "12.7.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.9.tgz#da0210f91096aa67138cf5afd04c4d629f8a406a"
 
+"@types/node@^15.0.2":
+  version "15.0.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.3.tgz#ee09fcaac513576474c327da5818d421b98db88a"
+
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
@@ -1059,9 +1063,9 @@ domexception@^1.0.1:
   dependencies:
     webidl-conversions "^4.0.2"
 
-dotenv@^8.0.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+dotenv@^9.0.0:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-9.0.2.tgz#dacc20160935a37dea6364aa1bef819fb9b6ab05"
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -2478,10 +2482,11 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
 nestjs-config@^1.2.2:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/nestjs-config/-/nestjs-config-1.4.7.tgz#901046598c8e4dbd98783caf7bf4cd096484c252"
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/nestjs-config/-/nestjs-config-1.4.8.tgz#24e4986ee529e486f9e8cdd4a769bc87c7a5fa6f"
   dependencies:
-    dotenv "^8.0.0"
+    "@types/node" "^15.0.2"
+    dotenv "^9.0.0"
     glob "^7.1.2"
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
